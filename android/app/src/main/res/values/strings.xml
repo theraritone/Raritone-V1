@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Raritone</string>
+    <string name="title_activity_main">Raritone</string>
+    <string name="package_name">com.raritone.app</string>
+    <string name="custom_url_scheme">com.raritone.app</string>
+</resources>

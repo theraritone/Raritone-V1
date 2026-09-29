@@ -1,0 +1,34 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+
+# local-driver storage: guest JSON and media. Never commit user data.
+.data/
+
+dev-check.log
+
+# ---- mobile shells ----
+# Gradle outputs + machine-local SDK path.
+android/app/build/
+android/.gradle/
+local.properties
+# LAN test cert pinning + any signing material. The pinned cert is
+# developer-machine state; restore android/app/src/main/res/raw/raritone_lan.pem
+# from a trusted copy for LAN test builds. Release keystores are secrets.
+*.cer
+*.key
+*.pem
+*.pfx
+*.p12
+*.keystore
+*.jks
+# Xcode derived data, archives, and CocoaPods (this project uses SPM).
+DerivedData/
+*.xcarchive
+ios/App/Pods/
+# test-run artifacts
+*.log

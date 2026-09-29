@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Test-build trust: the LAN backend serves HTTPS with a self-signed cert
+  (pinned below), because the phone's WebView must see a secure origin for
+  camera + WebRTC. Production backends use public CA certs, so this file then
+  only needs `system` anchors.
+-->
+<network-security-config>
+  <domain-config cleartextTrafficPermitted="false">
+    <domain includeSubdomains="false">192.168.0.249</domain>
+    <trust-anchors>
+      <certificates src="@raw/raritone_lan" />
+      <certificates src="system" />
+    </trust-anchors>
+  </domain-config>
+</network-security-config>

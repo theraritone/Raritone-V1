@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --raritone-violet: 139 92 246;
+    --raritone-cyan: 34 211 238;
+    --raritone-canvas: 7 7 11;
+    --raritone-chrome: 16 16 24;
+    --raritone-raise: 26 26 38;
+    --raritone-ink: 244 244 248;
+    --raritone-muted: 154 154 176;
+    --raritone-line: 255 255 255 / 0.1;
+    --raritone-safe-top: env(safe-area-inset-top, 0px);
+    --raritone-safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    min-height: 100dvh;
+  }
+
+  body {
+    margin: 0;
+    background: #050508;
+    color: #f4f4f8;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The camera is the app. Nothing outside the phone frame should scroll. */
+  #root {
+    isolation: isolate;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* WCAG 2.2 AA: visible focus for every keyboard-reachable control. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--raritone-cyan));
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::placeholder {
+    color: rgb(var(--raritone-muted) / 0.75);
+  }
+}
+
+@layer components {
+  /* The whole UI is authored against a 390px design width. On a desktop
+     preview it becomes a centred phone so the camera-first framing still reads. */
+  .rt-frame {
+    @apply relative mx-auto flex h-[100dvh] w-full max-w-[430px] flex-col overflow-hidden;
+    background: #050508;
+  }
+
+  @media (min-width: 768px) {
+    .rt-frame {
+      border-left: 1px solid rgb(255 255 255 / 0.07);
+      border-right: 1px solid rgb(255 255 255 / 0.07);
+    }
+  }
+
+  .rt-glass {
+    background: rgb(10 10 16 / 0.72);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .rt-panel {
+    @apply rounded-2xl border border-white/10 bg-chrome/90;
+  }
+
+  .rt-hairline {
+    @apply border-t border-white/10;
+  }
+
+  .rt-eyebrow {
+    @apply text-[10px] font-semibold uppercase tracking-[0.18em] text-white/50;
+  }
+
+  .rt-btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-full text-sm font-semibold
+      transition-transform duration-150 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-45;
+  }
+
+  .rt-btn-primary {
+    @apply rt-btn bg-violet-electric px-5 text-white shadow-[0_8px_28px_-10px_rgba(139,92,246,0.85)];
+  }
+
+  .rt-btn-secondary {
+    @apply rt-btn border border-white/15 bg-white/[0.06] px-5 text-white;
+  }
+
+  .rt-btn-ghost {
+    @apply rt-btn px-3 text-white/75;
+  }
+
+  .rt-icon-btn {
+    @apply rt-btn h-10 w-10 bg-black/45 text-white backdrop-blur-md;
+  }
+
+  .rt-input {
+    @apply w-full rounded-xl border border-white/12 bg-white/[0.06] px-4 py-3 text-[15px] text-white
+      outline-none transition-colors focus:border-violet-electric/70 focus:bg-white/[0.09];
+  }
+
+  .rt-scroll-x {
+    @apply flex gap-3 overflow-x-auto overscroll-x-contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rt-scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rt-snap {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .rt-body-scroll {
+    @apply overflow-y-auto overscroll-contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+  }
+
+  .rt-body-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .rt-body-scroll::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 0.18);
+    border-radius: 999px;
+  }
+}
+
+@layer utilities {
+  .rt-shimmer {
+    background-image: linear-gradient(
+      100deg,
+      transparent 20%,
+      rgb(var(--raritone-cyan) / 0.16) 42%,
+      rgb(var(--raritone-cyan) / 0.3) 50%,
+      rgb(var(--raritone-cyan) / 0.16) 58%,
+      transparent 80%
+    );
+    background-size: 220% 100%;
+  }
+
+  .rt-safe-top {
+    padding-top: max(var(--raritone-safe-top), 0.5rem);
+  }
+
+  .rt-safe-bottom {
+    padding-bottom: max(var(--raritone-safe-bottom), 0.5rem);
+  }
+
+  .rt-text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Reduced motion: calm, explicit status, no decorative movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

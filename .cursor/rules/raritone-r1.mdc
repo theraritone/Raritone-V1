@@ -1,0 +1,17 @@
+---
+description: Raritone Release 1 product and engineering constraints
+alwaysApply: true
+---
+
+# Raritone R1
+
+Read `AGENTS.md` before writing code. Product details live in `docs/PRD.txt`.
+
+- Camera-first PWA. Home is the camera, not a feed or shop.
+- Visual try-on only. Never claim size, fit, or “exactly how it will look”. Always show an AI try-on disclosure on generated output.
+- Private by default. Guest can try once; account required to save.
+- Upper-body garments only (tops, jackets), one item at a time.
+- Live try-on behind a provider adapter, with still-image fallback. No vendor lock-in in the UI.
+- Do not ship marketplace, checkout, public feed, DMs, or Discover in R1.
+- Follow the numbered build prompts in order (PWA shell → camera → carousel → live → switch → wardrobe → link import → capture → share → profile). Do not skip ahead.
+- Original visual language: dark camera chrome, electric violet primary, cyan processing. Do not copy another camera app’s trade dress.

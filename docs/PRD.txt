@@ -1,0 +1,1025 @@
+Product brief
+Camera-first social virtual wardrobe
+Product: Raritone
+Working category: Camera-first social virtual wardrobe
+Document: Product requirements document (PRD), version 1.0
+Date: 26 September 2026
+Status: Build-ready direction; commercial, legal, and model-provider choices still require validation
+Product owner: Naresh
+Executive decision
+Raritone will not begin as a shopping marketplace. It will begin as a consumer product that lets a person add a garment from almost anywhere, see a visual try-on, save the item in a personal wardrobe, and share the result. The app opens to the camera and feels immediate and playful, but it must develop its own visual identity and interaction system rather than copy another product.
+The strategy preserves the marketplace vision without making brand participation a launch dependency. First, users create demand and a useful wardrobe. Next, approved retailers and brands connect their catalogs so products arrive in Raritone cleanly and can be tried with one tap. A commerce layer becomes possible only after Raritone proves repeated consumer use and earns brand trust.
+DECISION: Build the consumer wedge first. Treat brands as Phase 2 integration partners and the marketplace as Phase 3, not as prerequisites for launch.
+The product in one sentence
+Raritone is a camera-first virtual wardrobe where users can import a garment from a link, image, screenshot, or approved partner; try a visual simulation on themselves; save the look; and share it.
+What Release 1 must prove
+Release 1 is successful only if it proves all four behaviors below:
+A new user reaches a first successful try-on with little explanation.
+A user can add a garment without waiting for a brand partnership.
+The result is useful or delightful enough to save or share.
+Users return to try another item or revisit their wardrobe.
+The first release is not intended to prove exact physical fit, replace an e-commerce checkout, support every garment type, or create a complete social network.
+Product principles
+Camera first: The fastest path from opening the app to seeing a look wins.
+Permissionless utility: A supported link or user-supplied image should be enough to begin.
+Truth over spectacle: Label AI output clearly and never imply size or fit certainty.
+Private by default: Body imagery, try-ons, and wardrobe items remain private unless the user chooses to share.
+One magical loop: Import, try, capture, save, share, return.
+Earn complexity: Add stories, friends, multi-item styling, and commerce only after the core loop retains users.
+Provider flexibility: The product should not be locked to one generation provider.
+The Raritone core loop turns a single try-on into a saved wardrobe and a reason to return.
+Assumptions that need confirmation
+The Raritone name remains the product name.
+Initial operations are India-first and English-first; launch geography has not been finalized.
+The first supported category is upper-body clothing. Dresses and full-body garments follow after quality passes; shoes and small accessories are separate technical tracks.
+Release 1 uses a mobile-first progressive web app (PWA) to validate behavior quickly. A native app follows when camera performance, share extensions, notifications, or retention justify it.
+The existing React frontend and Express/TypeScript backend are the starting technical assets.
+A live virtual try-on provider is available behind a provider adapter. Provider selection and commercial terms are not fixed by this PRD.
+Users may import public product media only when they are entitled to use it. Partner APIs and user uploads are preferred over unauthorized scraping.
+Exact age policy, launch markets, subscription pricing, and legal text remain decisions for product and legal review.
+Product strategy
+The consumer wedge removes the brand bottleneck
+The previous marketplace concept depended on brands agreeing to list products before users received enough value. Raritone reverses that dependency. Users first create private wardrobes from their own clothing, screenshots, photos, and supported links. This produces utility and behavioral evidence without asking a brand to join.
+The long-term platform remains intact:
+Phase 1 — Consumer utility: Add anything supported, try it, save it, and share it.
+Phase 2 — Brand connectivity: Catalog feeds, deep links, verified product metadata, analytics, and branded try-on collections.
+Phase 3 — Commerce: Shopping discovery, affiliate or merchant checkout pathways, and a marketplace only where supply, demand, and economics are proven.
+The north-star experience is instant transformation
+The defining moment is not browsing a catalog. It is seeing a chosen garment represented on the user quickly enough that the experience feels like a camera effect rather than a design tool. Every extra field, modal, and loading screen reduces that effect.
+The primary loop is:
+Open camera → select or add garment → start try-on → capture → save/share → return to wardrobe.
+Positioning
+For style-curious people who want to see how a garment might look on them,
+Raritone is a camera-first personal wardrobe,
+that turns garment images and supported product links into visual try-on experiences,
+unlike a store-specific fitting tool,
+because the wardrobe belongs to the user and can contain items from multiple sources.
+Strategic non-goals
+Raritone will not initially:
+Guarantee size, drape, comfort, material behavior, or physical fit.
+Become a general messaging application.
+Host checkout, payment, fulfillment, returns, or customer service for merchants.
+Promise support for every external product page.
+Build a public feed before privacy and moderation are ready.
+Treat generated output as an authentic photo of the garment or the person.
+Users, needs, and validation hypotheses
+The first user wants confidence and play, not another store
+The primary user is a style explorer who sees garments across social media and commerce sites, wants to imagine them personally, and currently relies on mental guesswork, screenshots, or advice from friends. Demographic details are hypotheses, not established facts; discovery interviews and beta data must refine them.
+Primary persona: The style explorer
+Situation: Finds looks across many apps and keeps scattered screenshots or saved posts.
+Jobs to be done:
+When I discover a garment, help me see a believable visual version on myself before I forget it.
+When I am choosing between items, keep them together and let me compare looks.
+When I want an opinion, let me share a clean try-on without exposing more personal data than I choose.
+Pain points: Fragmented saved items, uncertainty about appearance, repeated uploads, slow rendering, and fear that body photos may be exposed.
+Success signal: Completes a try-on, saves the garment, and returns within seven days.
+Secondary persona: The outfit planner
+Situation: Wants to use owned and aspirational clothing to plan a day, event, or trip.
+Jobs to be done:
+Organize my items by status, category, and occasion.
+Revisit previous looks without rebuilding them.
+Compare options and share a shortlist privately.
+Success signal: Creates a collection or revisits saved looks across multiple sessions.
+Secondary persona: The creator
+Situation: Makes fashion content or sends outfit ideas to friends.
+Jobs to be done:
+Produce a distinctive photo or short clip quickly.
+Retain control over visibility, attribution, and deletion.
+Reuse garments and looks without repeating setup.
+Success signal: Shares or exports multiple try-ons while keeping generation quality acceptable.
+Future customer: The brand or retailer
+Situation: Wants product discovery and try-on engagement without giving up customer context.
+Jobs to be done:
+Send clean catalog assets and product availability to Raritone.
+Offer a verified one-tap try-on destination.
+Measure attributable engagement without receiving private body imagery.
+Success signal: A supported catalog drives qualified try-ons and product-page visits under agreed privacy rules.
+Research questions before public launch
+Do users understand that try-on is visual simulation rather than fit prediction?
+Which import path wins: screenshot, image upload, camera capture, or product link?
+Is a still-image result sufficient, or does live motion materially increase return use?
+How much latency is tolerated before users abandon?
+Which garment category produces the highest combination of quality and repeat use?
+Which output is most valuable: private save, comparison, direct share, or public post?
+What makes users trust deletion and privacy controls?
+What free usage allowance supports learning without creating uncontrolled inference cost?
+Interview plan
+Recruit three small cohorts rather than one broad sample: frequent online fashion shoppers, people who save outfit inspiration, and creators who share looks. Ask each person to bring a real garment they recently considered. Observe the full journey from discovery to import, try-on, decision, and share. Do not lead with the AI explanation; measure whether the product is understandable through interaction.
+Scope, priorities, and release gates
+Release 1 proves one garment, one person, one fast loop
+The Must/Should/Could/Won’t framework prevents the social vision from swallowing the core try-on product.
+Must have
+Camera-first mobile home.
+Contextual camera and photo permission prompts.
+Guest first try-on, followed by account creation to save.
+Import by image, screenshot, camera photo, and supported product link.
+Manual crop/selection fallback when garment extraction fails.
+Upper-body garment try-on, one item at a time.
+Controlled live session with still-image fallback.
+Garment switching without leaving the camera experience.
+Capture photo; short video only if the provider and device pass performance gates.
+Private wardrobe with folders or collections.
+Basic profile and privacy controls.
+Native share sheet or secure share link.
+AI label, source attribution, report, delete, block, and abuse controls.
+Usage meter, cost cap, timeout, retry, and graceful failure states.
+Analytics for the complete funnel.
+Should have
+Compare two saved looks.
+Favorites and recent items.
+Background processing notifications.
+Basic occasion and category tags.
+“Share to Raritone” extension in the first native release.
+Product-source link back to an approved origin.
+Automatic low-confidence warning.
+Could have
+Private friend circles.
+Twenty-four-hour stories.
+Creator challenges and discover feed.
+AI outfit suggestions using wardrobe items.
+Partner catalog search.
+Brand profile pages.
+Won’t have in Release 1
+Marketplace checkout.
+Exact size recommendation or fit guarantee.
+Multi-person try-on.
+Full outfit layering across arbitrary categories.
+Shoes, glasses, jewelry, watches, or handbags as launch promises.
+Direct messaging or a full follower graph.
+Public posting by default.
+Automated ingestion from unsupported sites.
+Category expansion is quality-gated
+Stage
+Category
+Requirement
+Launch
+Tops, jackets
+Quality baseline
+Next
+Dresses, full body
+Pose consistency
+Later
+Bottoms
+Waist/leg fidelity
+Separate track
+Shoes
+Foot/ground tracking
+Separate track
+Accessories
+Occlusion precision
+A new category ships only when its success rate, visual quality, latency, and cost meet the same acceptance process as the launch category.
+Release gates
+Gate
+Evidence
+Decision
+Prototype
+Task observation
+Fix flow or proceed
+Alpha
+Quality review
+Limit categories
+Private beta
+Retention + cost
+Tune allowance
+Public beta
+Safety + reliability
+Expand cohort
+General release
+Sustainable unit cost
+Scale acquisition
+STOP CONDITION: Do not add a public social feed or paid acquisition while first-try success, deletion, reporting, or inference cost remains uncontrolled.
+Experience architecture
+Camera is home; wardrobe is memory
+The default signed-in destination is the camera. Users can reach Wardrobe and Profile in one tap. Discover and social surfaces remain behind feature flags until the core loop passes release gates.
+Primary navigation
+Destination
+Purpose
+Release
+Camera
+Try and capture
+R1
+Wardrobe
+Save and organize
+R1
+Add
+Import a garment
+R1
+Discover
+Find public looks
+Later
+Profile
+Identity and controls
+R1
+On mobile, Camera receives the central action. Add is available from Camera and Wardrobe. Profile holds settings rather than placing settings inside the camera flow.
+Screen inventory
+Welcome and value preview.
+Camera home.
+Garment carousel drawer.
+Add item source chooser.
+Image crop and garment cleanup.
+Link import review.
+Garment detail.
+Try-on loading and live session.
+Capture review.
+Save and share sheet.
+Wardrobe grid.
+Collection detail.
+Look comparison.
+Profile.
+Privacy and data controls.
+Usage and plan.
+Help, report, and blocked content.
+Admin review console, separate from the consumer app.
+Core journey A: first try-on
+The user opens Raritone and sees a short value preview.
+The app opens the camera preview without requiring an account.
+Camera permission is requested only after the user taps “Use camera.”
+A small starter set explains the garment carousel using generic or licensed items.
+The user selects an item and taps Try on.
+Raritone checks framing, lighting, and supported pose without storing the frame unnecessarily.
+A controlled generation session starts with visible progress and cancel.
+The user captures a result.
+Saving prompts account creation; sharing may use the device share sheet under policy.
+The app explains what is stored and offers immediate deletion.
+Acceptance: A guest can reach the try-on result without navigating a feed, completing a profile, or entering payment details.
+Core journey B: add from a product link
+The user taps Add and chooses Product link.
+The app validates the address and determines whether the source is supported.
+Raritone retrieves permitted metadata and candidate product images.
+The user confirms the correct garment image, name, source, and category.
+If extraction is weak, the user crops the garment or uploads a screenshot.
+The item is marked “Imported” and saved privately.
+The user starts a try-on or returns to the wardrobe.
+Fallback: For unsupported or blocked sources, Raritone asks for a screenshot or image. It never pretends the import succeeded.
+Core journey C: add from image or screenshot
+The user selects an existing image or takes a garment photo.
+The app explains image-use rights and requests confirmation.
+Automatic extraction identifies the garment region.
+The user corrects the crop when needed.
+The user confirms category, item name, ownership state, and optional source.
+Processing creates a try-on-ready garment asset.
+The user receives a ready, needs-review, or unsupported result.
+Core journey D: return through the wardrobe
+The user opens Wardrobe.
+Recent items and collections appear before recommendations.
+Filters include category, ownership state, source, favorite, and last used.
+The user taps an item to review source and prior looks.
+The user taps Try again and returns to Camera with the item preselected.
+Core journey E: share with control
+The user captures a photo or short clip.
+Capture review offers crop, caption, AI label, and visibility.
+The user chooses Save privately, Share externally, or — when enabled — Post.
+External shares contain a controlled preview and optional Raritone link.
+Revocable links display an expiry or access setting when supported.
+The user can delete the source capture and generated media separately.
+Empty, error, and recovery states
+Empty wardrobe: Explain three add routes with one primary action.
+Unsupported link: Preserve the entered address locally long enough to offer screenshot upload; do not loop.
+Poor framing: Show one correction at a time, such as “step back” or “raise camera.”
+Generation delay: Show stage, cancel, and switch-to-photo fallback.
+Provider outage: Preserve the garment and queue only after explicit user choice.
+Moderation block: Explain the content category without exposing internal model rules.
+Usage limit: Show remaining allowance and the exact action that consumes it.
+Deletion pending: Remove the item from the UI immediately and show completion status in data controls.
+Functional requirements
+Accounts and onboarding preserve the first-use moment
+FR-001 — Guest start (Must): Users can inspect the camera experience and complete one eligible try-on before mandatory account creation, subject to abuse controls.
+FR-002 — Authentication (Must): Support secure email or phone sign-in and at least one platform sign-in method appropriate to the launch platform. Final methods require product selection.
+FR-003 — Progressive profile (Must): Ask only for display name at account creation. Avatar, style preferences, sizes, and bio remain optional and are not required for generation.
+FR-004 — Permission timing (Must): Request camera, microphone, photos, and notifications only when the related action is initiated. Explain the benefit before the operating-system prompt.
+FR-005 — Account recovery and deletion (Must): Users can recover access and initiate account deletion without contacting support. Deletion status and retention exceptions must be visible.
+Camera and try-on create the product’s magic
+FR-100 — Camera home (Must): Open to a full-height camera surface for returning signed-in users, with privacy-safe handling when permission is absent.
+FR-101 — Camera controls (Must): Provide front/rear switch, flash where supported, timer, framing guide, capture, and exit.
+FR-102 — Garment carousel (Must): Show recent, favorite, and collection items in a horizontal carousel. Selection must not require leaving the camera.
+FR-103 — Readiness check (Must): Before generation, detect whether the scene meets basic requirements such as one person, visible target region, sufficient light, and supported orientation.
+FR-104 — Try-on session (Must): Start, pause, resume where supported, cancel, and end a bounded session. The interface must distinguish camera preview from AI-generated output.
+FR-105 — Item switch (Must): Permit a switch to another prepared item in the same eligible session without rebuilding the entire navigation state.
+FR-106 — Time and cost guard (Must): Stop generation when the user leaves the foreground, loses connectivity beyond a threshold, reaches an allowance, or ends the session.
+FR-107 — Photo fallback (Must): If live generation is unavailable or too slow, offer a still-image workflow using the current camera frame or a selected photo.
+FR-108 — Quality feedback (Should): Allow “good,” “not accurate,” and issue tags such as garment shape, body distortion, color, or flicker. Never use this feedback for training without separate consent.
+Garment import makes the wardrobe universal
+FR-200 — Source chooser (Must): Support product link, photo library, screenshot, and camera capture.
+FR-201 — Link validation (Must): Validate scheme, destination safety, source support, and content type before retrieval.
+FR-202 — Approved metadata retrieval (Must): Retrieve title, source, canonical address, candidate media, and price only when permitted. Price and availability are optional, time-stamped metadata rather than promises.
+FR-203 — Garment selection (Must): Let the user select the correct item when an image contains multiple products or people.
+FR-204 — Image cleanup (Must): Provide segmentation, crop, rotate, and background cleanup, with manual correction.
+FR-205 — Category eligibility (Must): Identify supported, experimental, and unsupported categories before paid inference begins.
+FR-206 — Processing state (Must): Show queued, processing, ready, needs review, failed, and blocked states. Each failure includes a useful next action.
+FR-207 — Source provenance (Must): Preserve source type, optional source address, user assertion, imported date, and partner verification status.
+FR-208 — Duplicate detection (Should): Warn when the same image or canonical product is already in the wardrobe.
+FR-209 — Partner import (Later): Accept verified catalog items through documented partner feeds or APIs with update and removal handling.
+Wardrobe turns novelty into retention
+FR-300 — Private default (Must): New items, looks, and collections are visible only to the user.
+FR-301 — Item states (Must): Support Owned, Considering, Saved inspiration, and Archived. These states describe the user’s intent, not merchant inventory.
+FR-302 — Collections (Must): Create, rename, reorder, and delete collections; deletion offers whether to keep contained items.
+FR-303 — Search and filter (Must): Search user-entered names and filter by category, state, source, favorite, collection, and recency.
+FR-304 — Item detail (Must): Show prepared image, source, eligibility, prior looks, notes, collections, privacy, and delete.
+FR-305 — Look history (Must): Save generated output only after explicit user action. A history setting can disable automatic local recents.
+FR-306 — Compare (Should): Present two saved looks side by side with equal framing and no implied fit score.
+FR-307 — Outfit composition (Later): Combine multiple wardrobe items only after layering order and visual quality are validated by category.
+Capture and sharing remain user-controlled
+FR-400 — Capture photo (Must): Capture the rendered state at the highest supported resolution without UI chrome.
+FR-401 — Capture video (Conditional): Record a bounded clip only when frame rate, audio choice, device heat, provider terms, and cost pass acceptance thresholds.
+FR-402 — AI disclosure (Must): Include a visible but unobtrusive “AI try-on” label in the review and shared artifact. A user may move the label but not remove required disclosure.
+FR-403 — External share (Must): Use the operating-system share sheet or a revocable Raritone link. The user selects the destination; Raritone does not silently publish.
+FR-404 — Download (Must): Allow saving an output to the device after permission and disclosure confirmation.
+FR-405 — Public post (Later): Posting requires audience selection, moderation, reporting, blocking, comments policy, and age controls.
+FR-406 — Story (Later): A time-limited post expires from audience access but remains subject to disclosed retention and moderation rules.
+Profile establishes identity without exposing the body
+FR-500 — Basic profile (Must): Support display name, handle if public features are enabled, avatar, short bio, and optional style preferences.
+FR-501 — Visibility controls (Must): Separate profile visibility, wardrobe visibility, individual look visibility, and discoverability.
+FR-502 — Usage view (Must): Show free allowance, paid entitlement when enabled, live-session consumption, and reset rules.
+FR-503 — Data controls (Must): Provide export, deletion, consent history, blocked accounts when social exists, and model-training choice if ever offered.
+FR-504 — Social graph (Later): Follow, friend, remove, block, and private-circle controls must be designed before stories or direct sharing inside Raritone.
+Notifications are earned, not assumed
+FR-600 — Processing notification (Should): Notify only when the user explicitly backgrounds a generation job.
+FR-601 — Product reminder (Could): Remind the user about a saved item only with opt-in and a clear frequency control.
+FR-602 — Social notification (Later): Likes, comments, mentions, and friend activity remain off until the social layer ships.
+Administration and operations make failures manageable
+FR-700 — Review queue (Must): Authorized moderators can review reported public media, source complaints, and policy blocks with least-privilege access.
+FR-701 — Content removal (Must): Remove a product source, garment asset, look, or public post independently, while preserving required audit evidence.
+FR-702 — Provider controls (Must): Operations can disable a model, category, region, or generation mode without releasing a new client.
+FR-703 — Cost controls (Must): Configure per-user, per-session, per-device, and global budgets; stop new work before exceeding the configured ceiling.
+FR-704 — Support trace (Must): Expose a non-sensitive job reference, timestamps, status, provider class, and error category without exposing source images broadly.
+FR-705 — Partner console (Later): Brands can submit catalog assets, inspect validation failures, revoke items, and view aggregate engagement without accessing individual body imagery.
+Interaction and visual design
+Raritone should feel playful, premium, and original
+The interaction model may borrow the camera-first immediacy familiar from social-camera products, but Raritone must not duplicate another app’s icons, layouts, terminology, motion, or trade dress. The brand expression should make the wardrobe and garment source — not generic face effects — the center of the experience.
+Proposed visual language
+Canvas: Predominantly dark camera chrome so garments remain visually dominant.
+Accent: Electric violet for primary actions and cool cyan for processing or connected states.
+Type: Clean geometric sans serif with high legibility at small mobile sizes.
+Motion: Fast, functional transitions; garment selection can “snap” into place, while generation status remains calm and explicit.
+Cards: Tall garment thumbnails with visible category, source, and readiness state.
+Haptics: Light selection feedback; no repeated vibration during processing.
+Camera hierarchy
+Live or selected person view.
+AI/live state label and privacy indicator.
+Selected garment and carousel.
+Try/capture control.
+Add, wardrobe, and exit actions.
+Session time or usage indicator when generation is active.
+Accessibility requirements
+Meet Web Content Accessibility Guidelines (WCAG) 2.2 AA for web surfaces where applicable.
+Provide text labels for every icon and control.
+Never encode generation status through color alone.
+Respect reduced-motion settings.
+Support dynamic text without hiding the camera exit, cancel, or privacy controls.
+Provide screen-reader descriptions for garment images and generated outputs when users add descriptions; do not infer sensitive traits.
+Offer a non-camera photo workflow for users who cannot or do not want to use live video.
+Avoid instructions that assume standing, full mobility, or a specific body shape.
+Copy rules maintain trust
+Use “visual try-on,” “preview,” and “AI-generated” rather than “perfect fit,” “accurate size,” or “exactly how it will look.” Error messages state what happened, what was saved, what was not charged, and what the user can do next.
+Examples:
+“Move back until your upper body is visible.”
+“This item is not ready for live try-on. You can try a photo instead.”
+“We could not import this page. Upload a screenshot to continue.”
+“This is an AI preview, not a size or fit guarantee.”
+“Generation stopped when the app moved to the background.”
+AI quality, safety, and trust
+A believable result is necessary, but an honest result is mandatory
+Raritone must evaluate the complete user experience rather than a single attractive demo. A release candidate needs stable identity, garment shape, color, body boundaries, movement, and recovery across a representative evaluation set.
+Quality dimensions
+Dimension
+Failure example
+Response
+Identity
+Face/body drift
+Stop or fallback
+Garment shape
+Missing sleeve
+Mark low confidence
+Color/detail
+Logo distortion
+Warn; no claim
+Occlusion
+Arms disappear
+Reframe guidance
+Temporal stability
+Live flicker
+Photo fallback
+Pose coverage
+Turn breaks output
+Limit movement
+Body diversity
+Uneven quality
+Block release gate
+Source quality
+Tiny/blurred image
+Request replacement
+Evaluation protocol
+Build a consented internal test set covering body presentation, skin tones, body shapes, mobility aids where volunteered, camera qualities, lighting, poses, and garment styles.
+Test each supported category across every provider or model version.
+Use human review plus automated checks for job success, temporal stability, corruption, latency, and policy violations.
+Record failure categories, not sensitive personal labels.
+Require a regression run before changing model, prompt, preprocessing, or compression.
+Give users a direct “not accurate” path and use the signal only under disclosed consent.
+Safety rules
+Disallow sexualized content involving minors and any attempt to create intimate or exploitative imagery.
+Disallow non-consensual use of another identifiable person’s image.
+Require a user attestation that they have rights or permission to use uploaded person and garment images.
+Detect and block prohibited content before generation where technically possible, then review reports after sharing.
+Do not offer face identification, biometric matching, or sensitive-attribute inference.
+Do not train on private body imagery by default. Any future training program requires separate, revocable, purpose-specific consent.
+Preserve a clear path for reporting impersonation, rights violations, and unsafe output.
+Apply stronger age and audience controls before public posting or direct messaging.
+Quality states are visible
+Every prepared garment has one of four user-visible states:
+Ready: Supported category and input quality passed.
+Experimental: Try-on is available, but output may be less stable.
+Needs review: User can fix crop, category, or source image.
+Unsupported: Try-on is unavailable; the item can remain saved.
+This avoids spending inference on inputs that are likely to fail and prevents silent quality degradation.
+Non-functional requirements
+Performance targets are hypotheses until measured on real devices
+The team should set final service-level objectives after an instrumented alpha. The starting targets below are product requirements, not current performance claims.
+ID
+Area
+Starting target
+NFR-01
+Camera ready
+≤ 2.0 s warm
+NFR-02
+Item switch UI
+≤ 150 ms
+NFR-03
+Status update
+≤ 1.0 s
+NFR-04
+Still result
+≤ 12 s p50
+NFR-05
+Live start
+≤ 8 s p50
+NFR-06
+API uptime
+99.5% beta
+NFR-07
+Crash-free sessions
+≥ 99.5%
+NFR-08
+Delete UI removal
+Immediate
+NFR-09
+Account deletion
+Policy-defined
+NFR-10
+Accessibility
+WCAG 2.2 AA
+Reliability requirements
+Generation requests are idempotent where charging or quota is involved.
+A retry must not consume a second allowance unless a second provider job begins and this is disclosed.
+Provider timeouts terminate compute and update the user-visible state.
+Garment import and wardrobe saving remain available during generation outages.
+Queued jobs have an expiry; expired jobs never restart without confirmation.
+Every user-facing failure maps to an internal error category and an owner.
+Device and network requirements
+Define a supported browser and device matrix before beta.
+Detect low memory, unsupported codecs, and poor bandwidth before starting live mode.
+Prefer adaptive output quality to uncontrolled buffering.
+Preserve the still-photo route on devices that cannot sustain live try-on.
+Test foreground/background transitions, incoming calls, screen lock, permission revocation, and network changes.
+Technical architecture
+A modular architecture protects the product from provider and platform change
+The existing React and Express/TypeScript work can become the first client and orchestration service. Production design should isolate providers, media handling, identity, policy, billing, and analytics rather than placing them inside the camera UI.
+Proposed logical architecture separates clients, orchestration, data, and AI providers.
+Logical components
+Client layer: PWA first; native iOS and Android later. Handles camera, local preview, upload, capture review, wardrobe UI, and share.
+API gateway: Authentication, rate limiting, request validation, versioning, and abuse controls.
+Wardrobe service: Items, collections, looks, visibility, provenance, and deletion lifecycle.
+Media service: Signed uploads, scanning, normalization, segmentation, thumbnails, and retention.
+Try-on orchestrator: Eligibility, prompt/template construction, provider routing, session control, retries, budget checks, and result normalization.
+Policy service: Input/output moderation, consent enforcement, rights complaints, and feature flags.
+Integration service: Supported link parsing, partner APIs, webhooks, catalog updates, and deep links.
+Social service: Disabled in initial release except share links; later owns profiles, graph, posts, stories, comments, and reports.
+Analytics pipeline: Product events, operational telemetry, cost allocation, experiments, and privacy controls.
+Admin console: Moderation, provider controls, source takedowns, support traces, and audit access.
+Provider abstraction
+The orchestration contract should accept a normalized person input, prepared garment, category, mode, constraints, and policy decision. It should return a job or session state, normalized progress, output media, cost metadata, quality signals, and structured errors. Provider-specific tokens and payloads remain server-side.
+Proposed service flow
+Client requests an upload authorization.
+Media is uploaded directly to private object storage.
+Media service scans and prepares the asset.
+Policy and category checks run before inference.
+Orchestrator verifies allowance and creates a provider job/session.
+Client receives progress through server-sent events, WebSocket, or polling chosen during implementation.
+Output is normalized, scanned, and made available through a short-lived signed address.
+The user explicitly saves or discards it.
+Analytics receives event metadata, not raw body imagery.
+Technology recommendation
+Continue with TypeScript across the web client and API where practical.
+Use the current React interface as a prototype base, but separate camera state from provider state before adding wardrobe features.
+Use PostgreSQL for relational product data and object storage for media.
+Use a queue for image preparation and asynchronous generation.
+Use Redis or an equivalent ephemeral store for session state, rate limits, and short-lived tokens.
+Store provider credentials only in the approved secret-management system.
+Add a remote configuration and feature-flag layer before beta.
+Technology choices are recommendations. The implementation team must confirm load, cost, deployment environment, and team capability before committing.
+Data model and lifecycle
+The data model separates a garment, a source, and a generated look
+A garment can exist without a merchant, and a generated look can be deleted without deleting the garment. This separation is essential for a universal wardrobe.
+Entity
+Purpose
+Key links
+User
+Account + controls
+Profile, consents
+Profile
+Public/private identity
+User
+Wardrobe item
+User’s saved garment
+Source, media
+Product source
+Origin metadata
+Partner or URL
+Garment asset
+Prepared try-on input
+Wardrobe item
+Collection
+User grouping
+Wardrobe items
+Try-on job
+Async generation
+User, asset
+Live session
+Bounded stream
+User, asset
+Look
+Saved output
+Job/session
+Share link
+Revocable access
+Look
+Post
+Future social object
+Look, audience
+Consent record
+Purpose + version
+User
+Report
+Safety complaint
+Target, reporter
+Usage ledger
+Allowance and cost
+User, job
+Required wardrobe item fields
+Stable internal identifier.
+User identifier.
+User-visible name.
+Category and support state.
+Ownership state.
+Source type and optional canonical source.
+Source attribution and partner verification.
+Original media reference and prepared asset reference.
+Created, updated, archived, and deleted timestamps.
+Visibility and collections.
+Processing status and structured error.
+Media lifecycle
+Capture or import: Store temporarily in a private staging area.
+Safety and preparation: Scan, normalize, segment, and create only necessary derivatives.
+Generation: Send the minimum required media to the selected provider under contract.
+Review: Keep result temporarily unless the user saves it.
+Save: Apply the user’s chosen visibility and retention policy.
+Delete: Remove access immediately, then complete provider and storage deletion according to disclosed timelines.
+Audit: Retain only the minimum non-media evidence required for security, billing disputes, or lawful obligations.
+Data minimization
+Do not store continuous camera streams unless recording is explicitly initiated.
+Do not log image bytes, signed media addresses, precise body measurements, or provider credentials.
+Avoid collecting date of birth if an age-gate result is sufficient.
+Keep analytics identifiers separate from direct identity where possible.
+Strip unnecessary image metadata before processing or sharing.
+API and integration requirements
+Stable contracts let web, native, partners, and providers evolve independently
+The route names below are a proposed versioned surface, not a commitment to exact implementation.
+Method
+Route
+Purpose
+POST
+/v1/uploads
+Signed upload
+POST
+/v1/imports
+Link/image import
+GET
+/v1/imports/{id}
+Import status
+POST
+/v1/items
+Create item
+GET
+/v1/items
+List wardrobe
+PATCH
+/v1/items/{id}
+Update item
+DELETE
+/v1/items/{id}
+Delete item
+POST
+/v1/tryons
+Start photo job
+GET
+/v1/tryons/{id}
+Job status
+POST
+/v1/live/sessions
+Start live session
+DELETE
+/v1/live/sessions/{id}
+End live session
+POST
+/v1/looks
+Save look
+POST
+/v1/shares
+Create share
+DELETE
+/v1/shares/{id}
+Revoke share
+API behavior
+Use explicit versioning and structured error codes.
+Require idempotency keys for chargeable or quota-consuming creation requests.
+Return server timestamps and state transitions for asynchronous jobs.
+Use short-lived signed media access, never permanent public object addresses.
+Rate-limit by account, device, network risk, and partner contract as appropriate.
+Sign and verify partner webhooks; retry with bounded exponential backoff.
+Record consent and policy version associated with each generation.
+Return machine-readable deletion status.
+External app connectivity has three levels
+Level 1: User-driven import
+Users paste a supported link or upload a screenshot. This can launch without a formal merchant integration, but it must respect site terms, rights, and technical access. Unsupported sources receive an honest fallback.
+Level 2: Share extension and deep links
+A native share extension accepts a link or image from another app and opens a prefilled Raritone import review. Raritone deep links can open a verified garment or collection directly in try-on.
+Level 3: Approved partner integration
+Brands or retailers send verified catalog records through a feed, API, or commerce-platform application. Required capabilities include:
+Create, update, archive, and delete product variants.
+Supply clean garment media and category metadata.
+Mark availability and territory with update timestamps.
+Create a deep link to the original product page.
+Receive aggregate, privacy-safe engagement events under contract.
+Process source takedowns and catalog revocation.
+Raritone must not promise that “any app connects” until that app or platform supports the integration and both sides approve the data use.
+Analytics and success criteria
+One north-star metric must connect delight to repeat value
+Proposed north-star metric: Weekly retained users who complete at least two successful try-ons using at least two distinct wardrobe items.
+This metric excludes accidental opens and one-off novelty. It combines generation success, wardrobe breadth, and return behavior.
+Funnel metrics
+Stage
+Metric
+Why it matters
+Acquire
+Qualified opens
+Intent quality
+Activate
+First try-on success
+Core value
+Engage
+Items tried per week
+Breadth
+Retain
+Week 1 / Week 4 return
+Habit
+Express
+Save/share rate
+Value signal
+Monetize
+Paid conversion
+Sustainability
+Operate
+Cost per success
+Unit economics
+Quality and trust metrics
+Input eligibility rate by source and category.
+Generation success rate.
+Time to first visible result.
+Live-session start and completion rates.
+User-rated accuracy and failure tags.
+Deletion completion and support contacts.
+Report rate by output and sharing mode.
+Consent opt-in and revocation by purpose.
+Provider cost per successful try-on.
+Percentage of spend consumed by failed or abandoned jobs.
+Event taxonomy
+Event
+Trigger
+Key properties
+app_opened
+App foreground
+Entry source
+camera_ready
+Preview ready
+Device tier
+import_started
+Add source chosen
+Source type
+import_completed
+Item prepared
+Category, duration
+import_failed
+Terminal failure
+Error category
+tryon_started
+Compute begins
+Mode, category
+tryon_first_frame
+Output visible
+Latency bucket
+tryon_completed
+Session/job ends
+Duration, outcome
+look_saved
+User saves
+Visibility
+share_started
+Share sheet opens
+Share type
+share_completed
+Confirmed callback
+Destination class
+item_retried
+Existing item used
+Item age bucket
+limit_reached
+Allowance blocked
+Plan, mode
+deletion_requested
+User confirms
+Object class
+deletion_completed
+Lifecycle ends
+Duration bucket
+Do not send raw images, captions, product addresses, contact lists, or sensitive inferred attributes in analytics events.
+Beta decision thresholds
+Exact numbers require baseline data, but the team should approve thresholds before each cohort begins. At minimum, define pass/fail values for first-try success, median latency, crash-free sessions, cost per success, seven-day return, save/share behavior, unsafe-output incidence, and deletion completion. A cohort must not expand with missing thresholds.
+Monetization and cost control
+Freemium funds consumer use; brand revenue arrives after proof
+The initial model should preserve a real free experience while placing predictable limits around expensive generation.
+Candidate plan structure
+Free: A small recurring allowance of photo try-ons and limited live-session time.
+Plus: Higher allowances, faster queue, longer live sessions, comparison, and advanced collections.
+Creator: Larger export limits, higher resolution, creator controls, and commercial-use terms where legally supported.
+Brand: Verified catalog connection, branded collections, aggregate analytics, service levels, and campaign tools.
+Pricing and allowances require live cost data and willingness-to-pay research. No specific price is approved in this PRD.
+Cost-control rules
+Show when an action consumes allowance before it starts.
+Preflight category, image quality, policy, device, and budget before provider work.
+Bound live sessions and require an intentional extension.
+Auto-pause when the app is backgrounded or the subject leaves the frame for a defined period.
+Cache prepared garment assets, not another user’s generated body output.
+Route by quality and cost only within approved providers and disclosed data terms.
+Track cost to import source, category, device tier, model version, cohort, and outcome.
+Shut off or degrade gracefully when a global budget guard trips.
+Growth comes from useful artifacts, not a premature feed
+The initial growth loop is private sharing: a user creates a try-on, shares it externally, and the recipient can view the result and try the garment through a controlled deep link. Raritone should measure whether recipients become successful users without requiring contact upload.
+Later growth loops may include:
+Collaborative private collections.
+Friend voting on two looks.
+Creator templates with clear attribution.
+Occasion challenges with moderation.
+Verified brand drops that open directly in the camera.
+Avoid contact scraping, dark-pattern invitations, forced watermarks that obscure the output, and public-by-default profiles.
+Privacy, security, rights, and compliance
+Body imagery is high-trust data and must be treated accordingly
+This PRD is not legal advice. Before launch, counsel must review the actual data flows, launch markets, age policy, provider terms, consumer rights, copyright, biometrics, advertising, and platform requirements.
+Privacy requirements
+Publish a plain-language data map covering capture, upload, processing, sharing, storage, training, and deletion.
+Use purpose-specific consent rather than one broad permission.
+Keep wardrobe, camera inputs, and saved looks private by default.
+Offer deletion at the item, look, media, and account levels.
+Provide an export of user-created records in a usable format.
+Do not repurpose private media for model training, advertising, or public examples without separate opt-in.
+Minimize provider retention and document each subprocesser.
+Provide parental/age controls required by launch markets before accepting younger users.
+Security requirements
+Encrypt media and personal data in transit and at rest.
+Use private object storage with short-lived signed access.
+Separate production, staging, and development data.
+Apply role-based access, multi-factor authentication, and audit logs to admin tools.
+Scan uploads and validate actual media type, size, dimensions, and decoding.
+Protect server-side requests against internal-network access and unsafe redirects when importing links.
+Rotate provider credentials through secret management and never expose them to the client.
+Run dependency, code, and infrastructure scanning in continuous integration.
+Create an incident response and user-notification process before beta.
+Perform penetration testing before general release.
+Product and media rights
+Users must confirm they own or have permission to use person imagery. Garment imports retain source attribution where available. Partner takedowns must remove catalog assets and prevent new generations while preserving a user’s lawful private records only when legally appropriate. Public or promotional use of generated media needs separate permission from the user.
+AI disclosure
+Every output view must make the synthetic nature understandable. External exports should carry durable metadata or a visible label where feasible and appropriate. Product copy must not turn a visual approximation into a fit, health, body-measurement, or purchase guarantee.
+Delivery plan
+A gated sixteen-week plan reaches a private beta without building the whole social network
+Timing is a planning assumption. The team should adjust it after staffing and technical discovery.
+A gated delivery plan protects the core loop before social and commerce expansion.
+Weeks 1–2: Product and quality baseline
+Confirm launch category, platform, age policy, and success thresholds.
+Audit the existing live VTO module and separate provider-specific code.
+Instrument current latency, cost, failure, and quality.
+Run ten to fifteen observed concept tests using real garment imports.
+Freeze Release 1 information architecture and design tokens.
+Exit gate: The team can demonstrate the complete loop with a supported upper-body garment and name the top three failure modes.
+Weeks 3–6: Core consumer alpha
+Build camera home, guest start, wardrobe, image import, crop, and garment processing.
+Add photo fallback, usage guard, result review, save, delete, and external share.
+Establish private storage, consent records, job lifecycle, and analytics.
+Create internal admin controls and quality review set.
+Exit gate: Internal testers complete first try-on and deletion; no uncontrolled provider sessions remain.
+Weeks 7–10: Closed alpha
+Add supported link import and honest screenshot fallback.
+Improve carousel switching, collections, profile, recovery, and data controls.
+Test across the supported device matrix.
+Tune session limits, preflight, quality states, and error recovery.
+Complete threat model, moderation workflows, and provider data review.
+Exit gate: First-try success, latency, crash, safety, and cost thresholds pass for the invited cohort.
+Weeks 11–14: Private beta
+Invite a controlled set of target users.
+Add comparison, background-completion notifications, and experiment framework if stable.
+Measure seven-day behavior and interview retained and churned users.
+Test pricing language without forcing payment if the cost baseline is not stable.
+Prepare support playbooks and incident response.
+Exit gate: Retention and cost improve together; the team can explain why users return.
+Weeks 15–16: Launch decision
+Review release scorecard and unresolved safety items.
+Choose PWA continuation or native investment based on measured constraints.
+Publish clear privacy, usage, and AI-disclosure content.
+Open a larger beta only if the scorecard passes.
+Decision: Ship, extend private beta, narrow the category, or pause. “More features” is not a valid response to a weak core loop.
+Post-beta sequence
+Native share extension and deep links.
+Partner catalog pilot with one to three brands.
+Verified product attribution and aggregate partner analytics.
+Private circles and collaborative comparison.
+Moderated stories or creator surfaces.
+Category expansion.
+Commerce experiments only after verified demand and partner trust.
+Risks and mitigations
+The main risks can kill the product before distribution does
+Risk
+Early signal
+Mitigation
+Poor visual quality
+Low save rate
+Narrow category
+Slow first result
+High abandon
+Preload + photo mode
+Inference overspend
+Cost per success rises
+Hard session caps
+Provider dependency
+Outage or price change
+Adapter + fallback
+Link import failure
+Unsupported rate rises
+Screenshot path
+Rights complaints
+Takedown volume
+Provenance + review
+Privacy distrust
+Permission drop-off
+Private default
+Harmful output
+Reports increase
+Policy + moderation
+Social complexity
+Core velocity falls
+Feature flags
+Weak retention
+One-session users
+Wardrobe utility
+Brand rejection
+No pilot conversion
+Consumer proof first
+Category overreach
+Quality variance
+Gated rollout
+Risk ownership
+Product: Scope, user truth, pricing, and launch gates.
+Engineering: Reliability, security, cost guards, provider abstraction, and deletion.
+AI/ML: Quality evaluation, model regression, category support, and safety performance.
+Design: Camera usability, trust copy, accessibility, and recovery.
+Operations: Moderation, rights complaints, support, and incidents.
+Legal/privacy: Consent, age policy, provider terms, IP, consumer rights, and launch-market review.
+Growth/partnerships: Sharing loop, partner contracts, attribution, and brand analytics.
+Release 1 acceptance criteria
+The build is complete only when the entire loop survives real use
+Onboarding and account
+A new user can understand the core value before signing in.
+Camera and photo permissions are requested contextually.
+A guest can complete the allowed first-use journey.
+Saving across devices requires a secure account.
+Account deletion is available in settings and produces a trackable state.
+Import and wardrobe
+A supported image can be cropped, classified, prepared, saved, and retried.
+An unsupported product link ends in a screenshot fallback, not a dead end.
+A user can identify source and ownership state.
+Items are private by default and searchable after saving.
+Deleting an item explains the effect on saved looks.
+Try-on
+An eligible upper-body garment can start in photo mode on every supported device.
+Live mode starts only on eligible devices and networks.
+The app distinguishes preview, processing, and AI output.
+Cancel ends provider work and updates the usage ledger correctly.
+Backgrounding pauses or ends live cost according to policy.
+A failed job can be retried without accidental double consumption.
+Capture and share
+The user can save or discard a generated result explicitly.
+Shared output carries AI disclosure.
+Private sharing does not make the profile or wardrobe public.
+A share link can be revoked when link sharing is used.
+Deleting a saved look removes user access immediately and completes the documented lifecycle.
+Operations
+Global and per-user cost guards are tested.
+A provider can be disabled remotely.
+Reports reach a review queue with least-privilege media access.
+Support can diagnose a job without viewing unrelated user media.
+Every key funnel and cost event appears in the analytics pipeline without raw imagery.
+Decision register
+Ten decisions must be made before implementation locks
+ID
+Decision
+Recommended default
+D-01
+Launch platform
+Mobile PWA
+D-02
+Launch category
+Tops + jackets
+D-03
+Default mode
+Photo, live opt-in
+D-04
+Guest allowance
+One successful try-on
+D-05
+Launch market
+India-first test
+D-06
+Age policy
+Legal review required
+D-07
+Account methods
+Email/phone + platform
+D-08
+Saved media default
+Private, opt-in save
+D-09
+Link import policy
+Approved + fallback
+D-10
+Beta thresholds
+Set before cohort
+Decisions deliberately deferred
+Subscription price and exact free allowance.
+Native framework and app-store release timing.
+Public handles, follows, stories, comments, and direct messaging.
+Brand analytics model and commercial terms.
+Affiliate, redirect, or marketplace revenue.
+Multi-item outfit generation.
+Shoes and accessory launch dates.
+Initial implementation backlog
+The first ten epics map directly to the release gates
+Epic 1 — Identity and consent
+Deliver guest session, authentication, progressive profile, permission education, consent records, recovery, and account deletion.
+Epic 2 — Camera shell
+Deliver responsive camera home, device capability detection, camera controls, framing guidance, session state, and accessibility.
+Epic 3 — Universal import
+Deliver image/screenshot/camera import, safe link validation, permitted metadata retrieval, source review, and fallback handling.
+Epic 4 — Garment preparation
+Deliver category classification, crop correction, segmentation, readiness states, duplicate warning, and prepared asset storage.
+Epic 5 — Try-on orchestration
+Deliver photo jobs, bounded live sessions, provider adapter, switching, usage ledger, cost guards, cancellation, and fallback.
+Epic 6 — Wardrobe
+Deliver item states, collection management, search, filters, item detail, recents, favorites, and deletion semantics.
+Epic 7 — Capture and share
+Deliver photo capture, conditional clip capture, review, AI disclosure, download, external share, revocable link, and delete.
+Epic 8 — Trust and safety
+Deliver pre-generation policy checks, output checks, user reports, rights complaints, moderation queue, blocking hooks, and audit controls.
+Epic 9 — Analytics and experimentation
+Deliver typed event schema, privacy filtering, funnel views, latency/cost dashboards, cohort flags, and threshold scorecard.
+Epic 10 — Operations and reliability
+Deliver feature flags, provider kill switch, alerts, job tracing, support tooling, backup/restore checks, and incident playbooks.
+Suggested build order
+Instrument and modularize the existing try-on path.
+Add photo-mode fallback and hard cost controls.
+Build garment preparation and private wardrobe.
+Wrap the path in the camera-first experience.
+Add account, consent, save, delete, and share.
+Add supported link import after image import is reliable.
+Run closed alpha before social or partner work.
+Definition of product success
+Raritone has earned the next phase when users repeatedly add garments, complete good-enough try-ons, save or share them, and return to the wardrobe within a sustainable cost envelope. At that point, Raritone can approach brands with evidence: users already want to try products, the integration path is clear, and private consumer data remains protected.
+If users only try once, more catalog supply will not fix the product. If quality is strong but cost is uncontrolled, more growth will make the problem worse. If users return and economics hold, brand connectivity becomes leverage rather than a dependency.
+Final product statement
+Raritone begins as a personal camera and wardrobe, grows into a connection layer for fashion products, and earns the right to become a marketplace later.
+Glossary
+AI try-on: A generated visual approximation of a garment on a person; it is not a fit guarantee.
+Prepared garment: A normalized garment asset that passed category, quality, and policy checks.
+Wardrobe item: A private user record for an owned, considered, or inspirational garment.
+Look: A saved AI-generated output tied to a person input and garment asset.
+Live session: A bounded period of continuous or near-real-time try-on generation.
+Photo mode: An asynchronous still-image try-on.
+Partner item: A garment supplied and maintained through an approved merchant integration.
+Supported link: A source Raritone is technically and legally able to process.
+Quality state: Ready, Experimental, Needs review, or Unsupported.
+Cost per success: Provider and infrastructure cost divided by completed try-ons that reach a visible result.
