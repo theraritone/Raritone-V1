@@ -99,9 +99,9 @@ export function GarmentCarousel({
               className="relative w-[88px] shrink-0 snap-center"
             >
               <span
-                className={`block aspect-[3/4] overflow-hidden rounded-2xl border-2 bg-white/10 transition-[border-color,transform] ${
+                className={`block aspect-[3/4] overflow-hidden rounded-2xl border-2 bg-[#f3effd] transition-[border-color,transform] ${
                   selected
-                    ? "border-ink-100 shadow-lg shadow-black/40"
+                    ? "border-violet-300 shadow-lg shadow-violet-950/40"
                     : "border-white/15 opacity-70"
                 }`}
               >

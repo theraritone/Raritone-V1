@@ -74,21 +74,21 @@ export function WardrobeScreen({
   }, [items]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-ink-950 text-white">
-      <header className="sticky top-0 z-10 flex items-center justify-between bg-ink-950/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur">
+    <div className="flex min-h-dvh flex-col bg-[#f7f5fb] text-ink-950">
+      <header className="sticky top-0 z-10 flex items-center justify-between bg-[#f7f5fb]/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur">
         <button
           type="button"
           onClick={onBack}
-          className="grid size-10 place-items-center rounded-full bg-white/10"
+          className="grid size-10 place-items-center rounded-full bg-white shadow-sm"
           aria-label="Back to camera"
         >
-          <Icon name="chevron-left" className="size-5" />
+          <Icon name="chevron-left" className="size-5 text-ink-700" />
         </button>
         <h1 className="text-lg font-semibold">Wardrobe</h1>
         <button
           type="button"
           onClick={() => setAddOpen(true)}
-          className="grid size-10 place-items-center rounded-full bg-ink-100 text-ink-950"
+          className="grid size-10 place-items-center rounded-full bg-ink-950 text-white"
           aria-label="Add a garment"
         >
           <Icon name="plus" className="size-5" />
@@ -106,7 +106,7 @@ export function WardrobeScreen({
               onClick={() => setFilter(value)}
               aria-pressed={filter === value}
               className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
-                filter === value ? "bg-white text-ink-950" : "bg-white/10 text-white/70"
+                filter === value ? "bg-ink-950 text-white" : "bg-white text-ink-700 shadow-sm"
               }`}
             >
               {WARDROBE_FILTER_LABEL[value]}
@@ -126,7 +126,7 @@ export function WardrobeScreen({
         ) : visible.length === 0 ? (
           <EmptyState onAdd={() => setAddOpen(true)} />
         ) : (
-          <ul className="grid grid-cols-2 gap-3">
+           <ul className="grid grid-cols-3 gap-2">
             {visible.map((item) => (
               <GarmentCard
                 key={item.id}
@@ -143,12 +143,12 @@ export function WardrobeScreen({
         )}
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 flex gap-2 bg-gradient-to-t from-ink-950 via-ink-950/95 to-transparent px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-6">
+       <div className="fixed inset-x-0 bottom-0 flex gap-2 bg-gradient-to-t from-[#f7f5fb] via-[#f7f5fb]/95 to-transparent px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-6">
         <button
           type="button"
           onClick={() => setImportOpen(true)}
           disabled={!flags.linkImport}
-          className="flex-1 rounded-full border border-white/25 py-3 text-sm font-semibold disabled:opacity-40"
+           className="flex-1 rounded-full border border-ink-200 bg-white py-3 text-sm font-semibold text-ink-900 shadow-sm disabled:opacity-40"
         >
           Paste a product link
         </button>
@@ -156,7 +156,7 @@ export function WardrobeScreen({
           type="button"
           onClick={() => setAddOpen(true)}
           disabled={!flags.wardrobeUpload}
-          className="flex-1 rounded-full bg-ink-100 py-3 text-sm font-semibold text-ink-950 disabled:opacity-40"
+           className="flex-1 rounded-full bg-ink-950 py-3 text-sm font-semibold text-white disabled:opacity-40"
         >
           Add a photo
         </button>
@@ -194,9 +194,9 @@ function GarmentCard({
   const usable = isLaunchCategory(item.category) && item.qualityState !== "unsupported";
   return (
     <li className="flex flex-col gap-1.5">
-      <div className="relative overflow-hidden rounded-2xl bg-white/5">
+       <div className="relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-ink-100">
         <button type="button" onClick={onUse} className="block w-full text-left" disabled={!usable}>
-          <span className="block aspect-[3/4]">
+             <span className="block aspect-[3/4] bg-[#eeeaf6]">
             <img
               src={resolveAppUrl(item.imageUrl)}
               alt={item.name}
@@ -210,7 +210,7 @@ function GarmentCard({
           onClick={onFavorite}
           aria-pressed={item.isFavorite}
           aria-label={item.isFavorite ? `Unfavourite ${item.name}` : `Favourite ${item.name}`}
-          className="absolute right-1.5 top-1.5 grid size-8 place-items-center rounded-full bg-black/50 backdrop-blur"
+             className="absolute right-1.5 top-1.5 grid size-8 place-items-center rounded-full bg-white/85 text-ink-700 shadow-sm backdrop-blur"
         >
           <Icon
             name={item.isFavorite ? "heart-filled" : "heart"}
@@ -222,7 +222,7 @@ function GarmentCard({
             href={item.sourceUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="absolute bottom-1.5 left-1.5 rounded-full bg-black/50 px-2 py-0.5 text-[10px] text-white/80 backdrop-blur"
+             className="absolute bottom-1.5 left-1.5 rounded-full bg-white/85 px-2 py-0.5 text-[10px] text-ink-700 backdrop-blur"
           >
             {item.sourceLabel ?? "Source"}
           </a>
@@ -230,19 +230,19 @@ function GarmentCard({
       </div>
       <div className="flex items-start justify-between gap-1">
         <div className="min-w-0">
-          <p className="truncate text-xs font-medium">{item.name}</p>
-          <p className="text-[10px] text-white/45">{CATEGORY_LABEL[item.category]}</p>
+           <p className="truncate text-xs font-semibold text-ink-950">{item.name}</p>
+           <p className="text-[10px] text-ink-500">{CATEGORY_LABEL[item.category]}</p>
         </div>
         <button
           type="button"
           onClick={onDelete}
           aria-label={`Remove ${item.name}`}
-          className="grid size-7 shrink-0 place-items-center rounded-full text-white/40 hover:text-white/80"
+           className="grid size-7 shrink-0 place-items-center rounded-full text-ink-400 hover:text-ink-800"
         >
           <Icon name="trash" className="size-4" />
         </button>
       </div>
-      <QualityBadge state={item.qualityState} className="w-fit" />
+       <QualityBadge state={item.qualityState} className="w-fit" />
     </li>
   );
 }
@@ -250,17 +250,17 @@ function GarmentCard({
 function EmptyState({ onAdd }: { onAdd: () => void }): ReactNode {
   return (
     <div className="py-16 text-center">
-      <div className="mx-auto mb-4 grid size-14 place-items-center rounded-2xl bg-white/10">
-        <Icon name="camera" className="size-6 text-white/70" />
+       <div className="mx-auto mb-4 grid size-14 place-items-center rounded-2xl bg-white shadow-sm">
+         <Icon name="camera" className="size-6 text-ink-500" />
       </div>
       <h2 className="text-base font-semibold">Nothing here yet</h2>
-      <p className="mx-auto mt-1 max-w-[16rem] text-sm text-white/55">
+       <p className="mx-auto mt-1 max-w-[16rem] text-sm text-ink-500">
         Add a photo of a garment, or paste a product link.
       </p>
       <button
         type="button"
         onClick={onAdd}
-        className="mt-5 rounded-full bg-ink-100 px-5 py-2.5 text-sm font-semibold text-ink-950"
+         className="mt-5 rounded-full bg-ink-950 px-5 py-2.5 text-sm font-semibold text-white"
       >
         Add your first garment
       </button>

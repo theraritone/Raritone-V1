@@ -210,7 +210,7 @@ export function PreviewScreen({
           disabled={!!busy}
         />
         <PreviewAction
-          label="Save"
+          label="Download"
           icon="download"
           busy={false}
           onClick={() => void onDownload()}

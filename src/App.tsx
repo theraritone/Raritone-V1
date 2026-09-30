@@ -5,6 +5,9 @@ import { CameraScreen, type CapturedResult } from "./screens/CameraScreen";
 import { PreviewScreen } from "./screens/PreviewScreen";
 import { WardrobeScreen } from "./screens/WardrobeScreen";
 import { ProfileScreen } from "./screens/ProfileScreen";
+import { SplashScreen } from "./screens/SplashScreen";
+import { OnboardingScreen } from "./screens/OnboardingScreen";
+import { CameraPermissionScreen } from "./screens/CameraPermissionScreen";
 
 /**
  * The app shell.
@@ -21,10 +24,21 @@ import { ProfileScreen } from "./screens/ProfileScreen";
 
 type Route = "camera" | "wardrobe" | "profile" | "preview";
 
+const SHELL_COMPLETE_KEY = "raritone.shell.complete";
+const SHELL_SPLASH_KEY = "raritone.shell.splash-seen";
+
 function Shell(): ReactNode {
   const { ready, bootError, reload } = useStore();
   const [route, setRoute] = useState<Route>("camera");
   const [capture, setCapture] = useState<CapturedResult | null>(null);
+  const [launchStep, setLaunchStep] = useState<"returning" | "splash" | "onboarding" | "permission">(() => {
+    try {
+      if (window.localStorage.getItem(SHELL_COMPLETE_KEY) === "1") return "returning";
+      return window.localStorage.getItem(SHELL_SPLASH_KEY) === "1" ? "onboarding" : "splash";
+    } catch {
+      return "splash";
+    }
+  });
 
   if (!ready) return <BootScreen label="Loading your wardrobe…" />;
 
@@ -36,6 +50,14 @@ function Shell(): ReactNode {
         </div>
       </div>
     );
+  }
+
+  if (launchStep === "splash") {
+    return <SplashScreen onContinue={() => { window.localStorage.setItem(SHELL_SPLASH_KEY, "1"); setLaunchStep("onboarding"); }} />;
+  }
+  if (launchStep === "onboarding") return <OnboardingScreen onComplete={() => setLaunchStep("permission")} />;
+  if (launchStep === "permission") {
+    return <CameraPermissionScreen onComplete={() => { window.localStorage.setItem(SHELL_COMPLETE_KEY, "1"); setLaunchStep("returning"); }} />;
   }
 
   if (route === "preview" && capture) {

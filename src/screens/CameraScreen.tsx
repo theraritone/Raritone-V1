@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import type { ReadinessCheck } from "../../shared/types";
+import { CATEGORY_LABEL, GARMENT_CATEGORIES, type ReadinessCheck, type GarmentCategory } from "../../shared/types";
 import { assessFraming, useCamera, type CameraController } from "../lib/camera";
 import {
   capturePhoto,
@@ -64,12 +64,16 @@ export function CameraScreen({
   const [mode, setMode] = useState<"live" | "photo">("live");
   const [framing, setFraming] = useState<ReadinessCheck | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const [category, setCategory] = useState<GarmentCategory | "all">("all");
 
   // Only launch-category garments can be tried on. The rest stay in the wardrobe
   // rather than being offered here and failing later.
   const tryableItems = useMemo(
-    () => items.filter((item) => item.qualityState === "ready" || item.qualityState === "experimental"),
-    [items],
+    () => items.filter((item) =>
+      (item.qualityState === "ready" || item.qualityState === "experimental") &&
+      (category === "all" || item.category === category)),
+    [items, category],
   );
 
   // --- camera lifecycle -------------------------------------------------
@@ -299,9 +303,8 @@ export function CameraScreen({
         autoPlay
         playsInline
         muted
-        className={`absolute inset-0 size-full object-cover transition-opacity ${
-          camera.facing === "user" ? "-scale-x-100" : ""
-        } ${cameraReady ? "opacity-100" : "opacity-0"}`}
+        style={{ transform: `${camera.facing === "user" ? "scaleX(-1) " : ""}scale(${zoom})` }}
+        className={`absolute inset-0 size-full object-cover transition-opacity ${cameraReady ? "opacity-100" : "opacity-0"}`}
       />
 
       {/*
@@ -318,6 +321,7 @@ export function CameraScreen({
         playsInline
         muted
         aria-label="Your live AI try-on"
+        style={{ transform: `scale(${zoom})` }}
         className={`absolute inset-0 size-full object-cover transition-opacity duration-500 ${
           session.remoteStream ? "opacity-100" : "opacity-0"
         }`}
@@ -329,9 +333,10 @@ export function CameraScreen({
         space as the video, which is why the two use identical transforms.
       */}
       <div
+        style={{ transform: `scale(${zoom})` }}
         className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
           session.resultUrl ? "opacity-100" : "opacity-0"
-        } ${camera.facing === "user" ? "-scale-x-100" : ""}`}
+        }`}
       >
         {session.resultUrl ? (
           <img
@@ -348,6 +353,12 @@ export function CameraScreen({
       <canvas ref={overlayRef} className="hidden" aria-hidden />
 
       {cameraReady ? null : <CameraGate state={camera.state} onRetry={() => void camera.retry()} onWardrobe={onOpenWardrobe} />}
+
+      <div className="pointer-events-none absolute right-4 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-3">
+        <button type="button" onClick={() => setZoom((value) => Math.min(1.35, +(value + 0.1).toFixed(2)))} aria-label="Zoom in" className="pointer-events-auto grid size-11 place-items-center rounded-2xl border border-white/15 bg-black/35 text-white backdrop-blur"><Icon name="zoom-in" className="size-5" /></button>
+        <button type="button" onClick={() => setZoom(1)} aria-label="Reset zoom" className="pointer-events-auto rounded-2xl border border-white/15 bg-black/35 px-2 py-2 text-[10px] font-semibold text-white backdrop-blur">{zoom.toFixed(1)}×</button>
+        <button type="button" onClick={() => setNotice("Grid guide toggled") } aria-label="Toggle framing grid" className="pointer-events-auto grid size-11 place-items-center rounded-2xl border border-white/15 bg-black/35 text-white backdrop-blur"><Icon name="grid" className="size-5" /></button>
+      </div>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between px-5 pb-6 pt-[max(1rem,env(safe-area-inset-top))]">
         <div className="flex items-center gap-2">
@@ -465,6 +476,13 @@ export function CameraScreen({
           ))}
         </div>
 
+        <div className="flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Garment categories">
+          {["all", ...GARMENT_CATEGORIES].map((value) => (
+            <button key={value} type="button" onClick={() => setCategory(value as GarmentCategory | "all")} className={`shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-semibold ${category === value ? "border-white bg-white text-ink-950" : "border-white/20 bg-black/30 text-white/75"}`}>
+              {value === "all" ? "All" : CATEGORY_LABEL[value as GarmentCategory]}
+            </button>
+          ))}
+        </div>
         <GarmentCarousel
           items={tryableItems}
           selectedId={selectedItemId}
@@ -511,6 +529,29 @@ export function CameraScreen({
             {guestUsed ? "Used" : mode === "live" ? "Tap · hold" : "Tap"}
           </span>
         </div>
+
+        <nav className="grid grid-cols-5 items-end border-t border-white/10 pt-2" aria-label="Primary navigation">
+          {([
+            ["Discover", "sparkle" as const],
+            ["Chat", "more" as const],
+            ["Camera", "camera" as const],
+            ["Friends", "user" as const],
+            ["Stories", "heart" as const],
+          ] as const).map(([label, icon]) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => label === "Camera" ? undefined : setNotice(`${label} is coming after Release 1`)}
+              className={`relative flex min-h-11 flex-col items-center justify-center gap-0.5 text-[9px] font-medium ${label === "Camera" ? "text-white" : "text-white/55"}`}
+              aria-label={label}
+            >
+              {label === "Camera" ? <span className="absolute -top-4 grid size-9 place-items-center rounded-full border-2 border-white bg-violet-electric"><Icon name={icon} className="size-4" /></span> : <Icon name={icon} className="size-4" />}
+              <span className={label === "Camera" ? "mt-4" : ""}>{label}</span>
+              {label === "Chat" ? <span className="absolute right-5 top-0 size-1.5 rounded-full bg-violet-electric" /> : null}
+              {label === "Stories" ? <span className="absolute right-4 top-0 size-1.5 rounded-full bg-cyan-signal" /> : null}
+            </button>
+          ))}
+        </nav>
 
         <AiDisclosure className="text-center" />
       </div>

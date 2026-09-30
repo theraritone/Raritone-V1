@@ -29,9 +29,15 @@ export function Sheet({
       }}
       className="m-0 max-h-[88dvh] w-full max-w-[520px] rounded-t-3xl bg-ink-900 p-0 text-white backdrop:bg-ink-950/70 backdrop:backdrop-blur-sm sm:mx-auto sm:mb-0 sm:mt-auto"
       aria-label={title}
+      aria-modal="true"
     >
       <div className="max-h-[88dvh] overflow-y-auto overscroll-contain px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3">
-        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/25" aria-hidden />
+        <div className="mb-4 flex items-center justify-between">
+          <div className="mx-auto h-1 w-10 rounded-full bg-white/25" aria-hidden />
+          <button type="button" onClick={onClose} aria-label="Close" className="absolute right-4 grid size-10 place-items-center rounded-full bg-white/10 text-white/75">
+            <span aria-hidden className="text-xl leading-none">×</span>
+          </button>
+        </div>
         <h2 className="mb-4 text-lg font-semibold">{title}</h2>
         {children}
       </div>

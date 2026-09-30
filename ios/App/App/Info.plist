@@ -53,6 +53,10 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Raritone needs your camera for the live AI try-on mirror.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Raritone uses your photos when you add a garment from an image or screenshot.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Raritone can save a try-on preview to your photo library when you choose to export it.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

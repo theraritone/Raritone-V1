@@ -23,7 +23,12 @@ export function Icon({
     | "chevron-left"
     | "trash"
     | "sparkle"
-    | "spinner";
+    | "spinner"
+    | "more"
+    | "sun"
+    | "zoom-in"
+    | "grid"
+    | "user";
   className?: string;
 }): ReactNode {
   const common = {
@@ -140,6 +145,16 @@ export function Icon({
           <path d="M12 3a9 9 0 1 0 9 9" />
         </svg>
       );
+    case "more":
+      return <svg {...common}><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none" /><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" /><circle cx="19" cy="12" r="1" fill="currentColor" stroke="none" /></svg>;
+    case "sun":
+      return <svg {...common}><circle cx="12" cy="12" r="3.5" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>;
+    case "zoom-in":
+      return <svg {...common}><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6" /></svg>;
+    case "grid":
+      return <svg {...common}><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></svg>;
+    case "user":
+      return <svg {...common}><circle cx="12" cy="8" r="3.5" /><path d="M5 20c.8-3.1 3.1-4.7 7-4.7s6.2 1.6 7 4.7" /></svg>;
   }
 }
 

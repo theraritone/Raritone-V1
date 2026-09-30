@@ -90,30 +90,30 @@ export function ProfileScreen({
   );
 
   return (
-    <div className="flex min-h-dvh flex-col bg-ink-950 text-white">
+    <div className="flex min-h-dvh flex-col bg-[#f7f5fb] text-ink-950">
       <header className="flex items-center justify-between px-4 pb-2 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <button
           type="button"
           onClick={onBack}
-          className="grid size-10 place-items-center rounded-full bg-white/10"
+          className="grid size-10 place-items-center rounded-full bg-white shadow-sm"
           aria-label="Back to camera"
         >
-          <Icon name="chevron-left" className="size-5" />
+          <Icon name="chevron-left" className="size-5 text-ink-700" />
         </button>
         <h1 className="text-lg font-semibold">You</h1>
         <button
           type="button"
           onClick={() => setEditing((current) => !current)}
-          className="rounded-full bg-white/10 px-3.5 py-2 text-xs font-semibold"
+          className="rounded-full bg-white px-3.5 py-2 text-xs font-semibold text-ink-800 shadow-sm"
         >
           {editing ? "Cancel" : "Edit"}
         </button>
       </header>
 
       <div className="flex-1 space-y-6 overflow-y-auto px-4 pb-[max(5rem,env(safe-area-inset-bottom))]">
-        <section className="rounded-2xl bg-white/5 p-4">
+        <section className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-ink-100">
           <div className="flex items-center gap-3">
-            <div className="grid size-12 shrink-0 place-items-center rounded-full bg-ink-100 text-lg font-semibold text-ink-950">
+             <div className="grid size-14 shrink-0 place-items-center rounded-full bg-violet-200 text-lg font-semibold text-ink-950">
               {(profile?.displayName?.[0] ?? "R").toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
@@ -144,8 +144,8 @@ export function ProfileScreen({
                 </div>
               ) : (
                 <>
-                  <p className="truncate text-sm font-semibold">{profile?.displayName || "Guest"}</p>
-                  <p className="truncate text-xs text-white/50">
+                   <p className="truncate text-sm font-semibold">{profile?.displayName || "Guest"}</p>
+                   <p className="truncate text-xs text-ink-500">
                     {profile?.handle ? `@${profile.handle}` : "No handle yet"}
                   </p>
                 </>
@@ -165,11 +165,25 @@ export function ProfileScreen({
           ) : null}
         </section>
 
+        <section className="relative overflow-hidden rounded-3xl bg-ink-950 p-5 text-white shadow-lg" aria-label="Raritone profile card">
+          <div className="relative z-10 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-violet-200">Raritone profile</p>
+              <p className="mt-2 text-xl font-semibold">{profile?.displayName || "Your style space"}</p>
+              <p className="mt-1 text-xs text-white/55">Private by default · AI try-on archive</p>
+            </div>
+            <div className="grid size-20 grid-cols-5 gap-1 rounded-xl bg-white p-2" aria-label="Profile QR code decoration">
+              {Array.from({ length: 25 }, (_, index) => <span key={index} className={(index * 7 + 3) % 5 < 2 ? "rounded-[2px] bg-ink-950" : "rounded-[2px] bg-violet-200"} />)}
+            </div>
+          </div>
+          <div className="absolute -bottom-12 -left-8 size-32 rounded-full bg-violet-500/30 blur-2xl" aria-hidden />
+        </section>
+
         <section aria-label="Your activity">
-          <h2 className="mb-2 text-sm font-semibold text-white/80">This week</h2>
+           <h2 className="mb-2 text-sm font-semibold text-ink-700">This week</h2>
           {stats ? (
             <div className="grid grid-cols-2 gap-2">
-              <Stat label="Try-ons" value={shown.tryOnsThisWeek} />
+               <Stat label="Try-ons" value={shown.tryOnsThisWeek} />
               <Stat label="Looks saved" value={shown.looksThisWeek} />
               <Stat label="Day streak" value={shown.dayStreak} />
               <Stat label="Garments" value={shown.wardrobeCount} />
@@ -305,8 +319,8 @@ export function ProfileScreen({
 
 function Stat({ label, value }: { label: string; value: number }): ReactNode {
   return (
-    <div className="rounded-2xl bg-white/5 px-3 py-2.5">
-      <dt className="text-[11px] text-white/50">{label}</dt>
+     <div className="rounded-2xl bg-white px-3 py-2.5 shadow-sm ring-1 ring-ink-100">
+       <dt className="text-[11px] text-ink-500">{label}</dt>
       <dd className="text-lg font-semibold tabular-nums">{value}</dd>
     </div>
   );
@@ -316,7 +330,7 @@ function Row({ label, value }: { label: string; value: string }): ReactNode {
   return (
     <div className="flex items-center justify-between gap-3">
       <dt className="text-white/55">{label}</dt>
-      <dd className="tabular-nums text-white/85">{value}</dd>
+       <dd className="tabular-nums text-ink-800">{value}</dd>
     </div>
   );
 }
