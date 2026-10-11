@@ -3,6 +3,7 @@ import cors from "cors";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { api } from "./routes/api.js";
+import { siteApi } from "./routes/site.js";
 import { config } from "./env.js";
 import { repo } from "./lib/db.js";
 import { fail, handler, HttpError } from "./lib/http.js";
@@ -36,6 +37,9 @@ export function createApp(): express.Express {
   app.use(express.json({ limit: "32mb" }));
 
   app.use(rateLimit);
+  // The website's API lives at /api/site and must be reachable before any
+  // device session exists — signing up is the first thing a visitor does.
+  app.use("/api/site", siteApi);
   app.use("/api", requireUser);
   app.use("/api", api);
 

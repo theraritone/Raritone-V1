@@ -6,6 +6,45 @@ yourself, and keep the result.
 Release 1 is upper-body garments only, guest-first (no login), and private by
 default: nothing is published unless you share it.
 
+## The website (raritone.com)
+
+The same process serves the public marketing site at the root routes: home,
+how it works, live try-on, style streak, membership plans, fashion rewards,
+brand partnerships, about, FAQ, contact, legal pages, sign in / sign up, a
+signed-in dashboard, and a role-protected admin dashboard. The PWA app itself
+lives at `/app`.
+
+Website state is stored by the same server: `DATA_DIR/site-db.json` with the
+local driver (site accounts, sessions, streak check-ins, partner applications,
+contact messages, waitlist, and plan configuration).
+
+What is real today:
+
+- Accounts with scrypt-hashed passwords and httpOnly session cookies.
+- Server-computed Style Streak state: one qualifying check-in per IST calendar
+  day, consecutive-streak and milestone math done server-side.
+- Partner applications, contact messages, and the membership waitlist persist
+  to the backend; the admin dashboard reads the same records.
+- Plan prices are server configuration, editable from the admin dashboard; the
+  public pricing table and the annual savings lines are derived from them.
+
+What is intentionally not faked:
+
+- **Payments are not connected.** Checkout does not exist; choosing a plan
+  joins a waitlist. Razorpay (or similar) plus signed webhooks is the next
+  integration — until then the admin revenue figures read ₹0 rather than a
+  projection.
+- **Email is not connected.** Email verification flags stay `false`, and
+  password resets are recorded as support requests handled manually.
+- **Rewards have no campaigns.** No coupon can be claimed anywhere; the sample
+  `RARITONE10` offer is labelled illustrative and inactive.
+- **Check-ins are affirmation-based** on the website (one per day, enforced
+  server-side). At launch this endpoint must additionally verify a saved
+  try-on from the app before the day qualifies.
+
+Administrator access: set `SITE_ADMIN_EMAILS` (comma-separated) before signing
+up; matching emails become admins. See `.env.example`.
+
 ## Run it
 
 ```bash
@@ -111,19 +150,20 @@ saved looks with it, and stories are off by default.
 ## Layout
 
 ```
-shared/         types, repository contract, sample garment art
+shared/         types, repository contract, sample garment art, site API contract
 server/
   app.ts        the express app, with no listener
   index.ts      starts it and logs the LAN addresses
-  lib/          auth, storage drivers, errors, link import, orchestration
+  lib/          auth, storage drivers, errors, link import, orchestration, site store
   provider/     try-on adapters: live-vto (real Decart sessions), mock, http template
-  routes/       the API surface
+  routes/       the API surface: /api (PWA) and /api/site (website)
   supabase/     schema.sql
 src/
   state/        device identity, API client, app store
   lib/          camera, capture, try-on session
   components/   carousel, sheets, error surfaces, icons
   screens/      camera, preview, wardrobe, profile
+  site/         the public website: router, layout, pages, dashboard, admin
 scripts/        icon generation, smoke test, style and server checks
 ```
 

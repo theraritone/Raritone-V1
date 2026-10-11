@@ -175,6 +175,22 @@ export const config = {
     max: envInt("RATE_LIMIT_MAX", 120),
   },
 
+  site: {
+    /**
+     * Comma-separated emails that are promoted to the administrator role when
+     * they sign up on raritone.com. Without this, every site account is a
+     * normal user and the admin API always answers 403.
+     */
+    adminEmails: new Set(
+      env("SITE_ADMIN_EMAILS")
+        .split(",")
+        .map((entry) => entry.trim().toLowerCase())
+        .filter(Boolean),
+    ),
+    /** Auth endpoints get a stricter limiter than general API traffic. */
+    authRateLimit: { windowMs: envInt("SITE_AUTH_RATE_WINDOW_MS", 600_000), max: envInt("SITE_AUTH_RATE_MAX", 20) },
+  },
+
   get storageDriver(): "supabase" | "local" {
     return supabaseUsable ? "supabase" : "local";
   },
