@@ -2,7 +2,7 @@
   "name": "Raritone",
   "short_name": "Raritone",
   "description": "Camera-first virtual wardrobe. Visual try-on previews — not a size or fit guarantee.",
-  "start_url": "/",
+  "start_url": "/app",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",

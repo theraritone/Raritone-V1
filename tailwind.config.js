@@ -33,6 +33,25 @@ export default {
         cyan: {
           signal: "rgb(var(--raritone-cyan) / <alpha-value>)",
         },
+        /**
+         * The raritone.com surface is a light, editorial canvas: warm paper,
+         * charcoal type, and a single warm-yellow accent reserved for streaks,
+         * rewards, and the actions that matter most.
+         */
+        paper: "#FAF9F6",
+        cream: "#F3EFE7",
+        sand: "#E8E1D3",
+        coal: {
+          DEFAULT: "#181611",
+          700: "#3F3B33",
+          500: "#6E6759",
+          400: "#8B8375",
+        },
+        gold: {
+          DEFAULT: "#F2AF0C",
+          deep: "#8A6403",
+          soft: "#FBF1D2",
+        },
       },
       /**
        * Tailwind's default opacity scale skips the values this design uses for
@@ -56,6 +75,7 @@ export default {
       },
       fontFamily: {
         sans: ['"DM Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ['"Fraunces"', '"DM Sans"', "ui-serif", "serif"],
         mono: ['"DM Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
       },
       maxWidth: {
@@ -102,6 +122,10 @@ export default {
           "0%, 80%, 100%": { transform: "translateY(0)", opacity: "0.45" },
           "40%": { transform: "translateY(-4px)", opacity: "1" },
         },
+        "float-y": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         shimmer: "shimmer 1.5s linear infinite",
@@ -114,6 +138,7 @@ export default {
         "scan-line": "scan-line 2.6s ease-in-out infinite",
         "spin-slow": "spin-slow 1.1s linear infinite",
         "bounce-dot": "bounce-dot 1.1s ease-in-out infinite",
+        "float-y": "float-y 7s ease-in-out infinite",
       },
     },
   },

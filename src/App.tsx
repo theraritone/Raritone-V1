@@ -1,18 +1,20 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { StoreProvider, useStore } from "./state/store";
 import { ErrorPanel, BootScreen } from "./components/feedback";
 import { CameraScreen, type CapturedResult } from "./screens/CameraScreen";
 import { PreviewScreen } from "./screens/PreviewScreen";
 import { WardrobeScreen } from "./screens/WardrobeScreen";
 import { ProfileScreen } from "./screens/ProfileScreen";
+import { SiteApp } from "./site/SiteApp";
 
 /**
  * The app shell.
  *
- * Three surfaces, no router: the camera is the home, and the wardrobe and
- * profile slide over it. That matches the PRD's navigation rule — the camera is
- * the front door, and nothing should feel like a separate destination — and it
- * avoids pulling in a routing library for three views.
+ * Two surfaces: the public website owns the root routes, and the camera-first
+ * PWA lives under /app (its manifest start_url). Inside the PWA there are no
+ * router segments — the camera is the home, and the wardrobe and profile slide
+ * over it. That matches the PRD's navigation rule and avoids pulling in a
+ * routing library.
  *
  * The service worker is registered in production only: a cached shell during
  * development serves stale modules and makes every change look like it did
@@ -81,9 +83,20 @@ function Shell(): ReactNode {
 }
 
 export default function App(): ReactNode {
-  return (
-    <StoreProvider>
-      <Shell />
-    </StoreProvider>
-  );
+  // /app is the PWA experience; everything else is the public website. The
+  // html shell carries the site's SEO title, so the app claims its own.
+  const isApp = window.location.pathname === "/app" || window.location.pathname.startsWith("/app/");
+
+  useEffect(() => {
+    if (isApp) document.title = "Raritone";
+  }, [isApp]);
+
+  if (isApp) {
+    return (
+      <StoreProvider>
+        <Shell />
+      </StoreProvider>
+    );
+  }
+  return <SiteApp />;
 }
