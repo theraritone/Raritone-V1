@@ -6,9 +6,10 @@ import { PreviewScreen } from "./screens/PreviewScreen";
 import { WardrobeScreen } from "./screens/WardrobeScreen";
 import { ProfileScreen } from "./screens/ProfileScreen";
 import { DiscoverScreen } from "./screens/DiscoverScreen";
+import { SubscriptionScreen } from "./screens/SubscriptionScreen";
 
-type Route = "home" | "discover" | "try-on" | "wardrobe" | "profile" | "preview";
-type NavRoute = Exclude<Route, "preview">;
+type Route = "home" | "discover" | "try-on" | "wardrobe" | "profile" | "subscription" | "preview";
+type NavRoute = Exclude<Route, "preview" | "subscription">;
 
 const navItems: Array<{ route: NavRoute; label: string; glyph: string }> = [
   { route: "home", label: "Home", glyph: "⌂" },
@@ -49,9 +50,13 @@ function Shell(): ReactNode {
     return <PreviewScreen capture={capture} onRetake={() => { setCapture(null); setRoute("try-on"); }} onDone={() => { setCapture(null); setRoute("home"); }} />;
   }
 
-  const bottomRoute: NavRoute = route === "try-on" ? "try-on" : route;
+  if (route === "subscription") {
+    return <SubscriptionScreen onBack={() => setRoute("profile")} />;
+  }
+
+  const bottomRoute: NavRoute = route === "try-on" ? "try-on" : route as NavRoute;
   if (route === "wardrobe") return <div className="relative h-dvh"><WardrobeScreen onBack={() => setRoute("home")} onUseGarment={() => setRoute("try-on")} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
-  if (route === "profile") return <div className="relative h-dvh"><ProfileScreen onBack={() => setRoute("home")} onOpenWardrobe={() => setRoute("wardrobe")} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
+  if (route === "profile") return <div className="relative h-dvh"><ProfileScreen onBack={() => setRoute("home")} onOpenWardrobe={() => setRoute("wardrobe")} /><button type="button" onClick={() => setRoute("subscription")} className="absolute right-4 top-[max(0.75rem,env(safe-area-inset-top))] z-20 rounded-full border border-cyan-200/30 bg-cyan-300/10 px-3 py-2 text-xs font-semibold text-cyan-100">Membership</button><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
   if (route === "discover") return <div className="relative h-dvh"><DiscoverScreen onTryOn={() => setRoute("try-on")} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
 
   return <div className="relative h-dvh"><CameraScreen onOpenWardrobe={() => setRoute("wardrobe")} onOpenProfile={() => setRoute("profile")} onCaptured={(result) => { setCapture(result); setRoute("preview"); }} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
