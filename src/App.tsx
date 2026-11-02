@@ -5,85 +5,58 @@ import { CameraScreen, type CapturedResult } from "./screens/CameraScreen";
 import { PreviewScreen } from "./screens/PreviewScreen";
 import { WardrobeScreen } from "./screens/WardrobeScreen";
 import { ProfileScreen } from "./screens/ProfileScreen";
+import { DiscoverScreen } from "./screens/DiscoverScreen";
 
-/**
- * The app shell.
- *
- * Three surfaces, no router: the camera is the home, and the wardrobe and
- * profile slide over it. That matches the PRD's navigation rule — the camera is
- * the front door, and nothing should feel like a separate destination — and it
- * avoids pulling in a routing library for three views.
- *
- * The service worker is registered in production only: a cached shell during
- * development serves stale modules and makes every change look like it did
- * nothing.
- */
+type Route = "home" | "discover" | "try-on" | "wardrobe" | "profile" | "preview";
+type NavRoute = Exclude<Route, "preview">;
 
-type Route = "camera" | "wardrobe" | "profile" | "preview";
+const navItems: Array<{ route: NavRoute; label: string; glyph: string }> = [
+  { route: "home", label: "Home", glyph: "⌂" },
+  { route: "discover", label: "Discover", glyph: "✦" },
+  { route: "try-on", label: "Try-On", glyph: "◎" },
+  { route: "wardrobe", label: "Wardrobe", glyph: "▦" },
+  { route: "profile", label: "Profile", glyph: "◯" },
+];
 
-function Shell(): ReactNode {
-  const { ready, bootError, reload } = useStore();
-  const [route, setRoute] = useState<Route>("camera");
-  const [capture, setCapture] = useState<CapturedResult | null>(null);
-
-  if (!ready) return <BootScreen label="Loading your wardrobe…" />;
-
-  if (bootError) {
-    return (
-      <div className="grid min-h-dvh place-items-center bg-ink-950 px-6">
-        <div className="w-full max-w-sm">
-          <ErrorPanel error={bootError} onRetry={() => void reload()} />
-        </div>
-      </div>
-    );
-  }
-
-  if (route === "preview" && capture) {
-    return (
-      <PreviewScreen
-        capture={capture}
-        onRetake={() => {
-          // The blob URL is released by the preview screen on unmount.
-          setCapture(null);
-          setRoute("camera");
-        }}
-        onDone={() => {
-          setCapture(null);
-          setRoute("camera");
-        }}
-      />
-    );
-  }
-
-  if (route === "wardrobe") {
-    return (
-      <WardrobeScreen
-        onBack={() => setRoute("camera")}
-        onUseGarment={() => setRoute("camera")}
-      />
-    );
-  }
-
-  if (route === "profile") {
-    return <ProfileScreen onBack={() => setRoute("camera")} onOpenWardrobe={() => setRoute("wardrobe")} />;
-  }
-
+function BottomNavigation({ route, onNavigate }: { route: NavRoute; onNavigate: (next: NavRoute) => void }): ReactNode {
   return (
-    <CameraScreen
-      onOpenWardrobe={() => setRoute("wardrobe")}
-      onOpenProfile={() => setRoute("profile")}
-      onCaptured={(result) => {
-        setCapture(result);
-        setRoute("preview");
-      }}
-    />
+    <nav className="rt-glass absolute inset-x-0 bottom-0 z-30 flex items-end justify-around border-t border-white/10 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2" aria-label="Primary navigation">
+      {navItems.map((item) => {
+        const active = route === item.route;
+        const isTryOn = item.route === "try-on";
+        return (
+          <button key={item.route} type="button" aria-current={active ? "page" : undefined} onClick={() => onNavigate(item.route)} className={`flex min-w-14 flex-col items-center gap-1 rounded-xl px-2 py-1 text-[10px] transition-colors ${active ? "text-cyan-200" : "text-white/50"}`}>
+            <span className={`grid place-items-center ${isTryOn ? "-mt-6 size-12 rounded-full border-4 border-ink-950 bg-violet-electric text-xl text-white shadow-lg shadow-violet-500/30" : "size-6 text-lg"}`} aria-hidden="true">{item.glyph}</span>
+            <span className={isTryOn ? "font-semibold text-white" : ""}>{item.label}</span>
+          </button>
+        );
+      })}
+    </nav>
   );
 }
 
+function Shell(): ReactNode {
+  const { ready, bootError, reload } = useStore();
+  const [route, setRoute] = useState<Route>("home");
+  const [capture, setCapture] = useState<CapturedResult | null>(null);
+
+  if (!ready) return <BootScreen label="Loading your wardrobe…" />;
+  if (bootError) return <div className="grid min-h-dvh place-items-center bg-ink-950 px-6"><div className="w-full max-w-sm"><ErrorPanel error={bootError} onRetry={() => void reload()} /></div></div>;
+
+  const navigate = (next: NavRoute) => setRoute(next);
+
+  if (route === "preview" && capture) {
+    return <PreviewScreen capture={capture} onRetake={() => { setCapture(null); setRoute("try-on"); }} onDone={() => { setCapture(null); setRoute("home"); }} />;
+  }
+
+  const bottomRoute: NavRoute = route === "try-on" ? "try-on" : route;
+  if (route === "wardrobe") return <div className="relative h-dvh"><WardrobeScreen onBack={() => setRoute("home")} onUseGarment={() => setRoute("try-on")} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
+  if (route === "profile") return <div className="relative h-dvh"><ProfileScreen onBack={() => setRoute("home")} onOpenWardrobe={() => setRoute("wardrobe")} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
+  if (route === "discover") return <div className="relative h-dvh"><DiscoverScreen onTryOn={() => setRoute("try-on")} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
+
+  return <div className="relative h-dvh"><CameraScreen onOpenWardrobe={() => setRoute("wardrobe")} onOpenProfile={() => setRoute("profile")} onCaptured={(result) => { setCapture(result); setRoute("preview"); }} /><BottomNavigation route={bottomRoute} onNavigate={navigate} /></div>;
+}
+
 export default function App(): ReactNode {
-  return (
-    <StoreProvider>
-      <Shell />
-    </StoreProvider>
-  );
+  return <StoreProvider><Shell /></StoreProvider>;
 }
