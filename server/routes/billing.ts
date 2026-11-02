@@ -3,6 +3,7 @@ import { SUBSCRIPTION_PLANS, type PaidSubscriptionPlanId, type Entitlement } fro
 import { config } from "../env.js";
 import { repo } from "../lib/db.js";
 import { readEntitlement } from "../lib/entitlements.js";
+import { assertStoreProduct } from "../lib/storeProducts.js";
 import { badRequest, HttpError } from "../lib/http.js";
 import { today } from "../lib/auth.js";
 
@@ -23,6 +24,7 @@ billingApi.post("/billing/receipts", async (req, res) => {
   const body = req.body as Partial<{ planId: PaidSubscriptionPlanId; platform: "apple" | "google"; productId: string; transactionId: string; receipt: string }>;
   if (!body.planId || !["pro", "vip"].includes(body.planId)) throw badRequest("Choose a paid Raritone plan.", "Select Pro or VIP and try again.");
   if (!body.platform || !body.productId || !body.transactionId || !body.receipt) throw badRequest("The store purchase receipt is incomplete.", "Finish the purchase in the App Store or Google Play.");
+  assertStoreProduct(body.planId, body.productId);
   if (!hasStoreVerificationConfig()) throw new HttpError(503, "provider_unavailable", "Store verification is not configured yet.", "Nothing was charged. Try again after the mobile store configuration is complete.", true);
   throw new HttpError(501, "provider_unavailable", "Store verification is not enabled for this build.", "Nothing was charged. Please try again later.", true);
 });
