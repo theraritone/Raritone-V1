@@ -9,44 +9,44 @@ Updated: 2026-11-02
 - Current runtime: TypeScript + Vite PWA with an Express API
 - Working areas found: camera surface, preview, wardrobe, profile, server routes, provider adapters, local persistence, Supabase integration path
 
-## Completed in this foundation pass
+## Completed
 
 - Created implementation branch: `feature/raritone-mobile-foundation`
 - Preserved the existing camera-first architecture instead of replacing working behavior
-- Documented the Figma-to-code implementation plan
-- Added the initial reusable design-token contract for the Raritone visual system
-- Added a Discover screen with editorial collections, category browsing, and try-on CTA
-- Added a persistent five-destination mobile navigation model: Home, Discover, Try-On, Wardrobe, Profile
-- Kept the existing camera capture, preview, wardrobe, and profile flows intact
-- Recorded current integration and release limitations
+- Added reusable design tokens
+- Added Discover and five-tab mobile navigation
+- Added server-owned Free, Pro, and VIP plan contract with ₹0/₹299/₹999 pricing
+- Added subscription screen with plan comparison and server-verification messaging
+- Added native in-app purchase adapter boundary that refuses fake web purchases
 
 ## In progress
 
-- Aligning visual details and assets with the Raritone V1 Figma screens
-- Adding authenticated user flows while retaining guest-first development behavior
-- Adding server-backed discovery and Style Streak data
+- Wiring Apple App Store and Google Play Billing adapters in native builds
+- Adding server receipt validation and entitlement persistence
+- Adding authenticated account linking and Style Streak data
 
 ## Pending integrations
 
+- Apple App Store subscription product configuration
+- Google Play Billing subscription product configuration
+- Apple receipt/App Store Server API credentials
+- Google Play service-account credentials for purchase verification
 - Production authentication provider credentials
 - Production private media storage credentials
 - Live AI provider credentials and production limits
-- App Store / Play Store subscription products
-- Stripe or Razorpay production configuration
 - Push notification credentials
 - Admin deployment environment
 
 ## Known limitations
 
 - The current repository is a PWA/Capacitor-oriented TypeScript application, not yet an Expo Router React Native project.
-- Live try-on requires the external provider session service and valid credentials.
-- No AI result is fabricated when the provider is unavailable.
+- Web development builds intentionally cannot start real in-app purchases.
+- No AI result or subscription entitlement is fabricated when an external provider is unavailable.
 - Payment, rewards, and entitlement decisions must remain server-verified.
-- Figma MCP inspection is limited to the shared design URL; exact exported assets and tokens must be confirmed during implementation.
 
 ## Verification status
 
-- GitHub connector cannot execute the repository's local npm scripts.
+- GitHub connector cannot execute local npm scripts.
 - Run locally before merging:
 
 ```bash
@@ -58,7 +58,7 @@ npm run verify
 
 ## Next implementation slice
 
-1. Add authenticated account linking and subscription entitlement reads.
-2. Add server-backed Discover and Style Streak endpoints.
-3. Map exact Figma assets and typography to the new navigation shell.
-4. Add device builds and native permission validation through Capacitor or migrate deliberately to Expo after characterization tests.
+1. Add a Profile membership entry and wire the subscription screen into navigation.
+2. Add native store adapters and receipt submission endpoints.
+3. Add server-backed entitlements and Style Streak.
+4. Map exact Figma assets and typography to the navigation shell.
