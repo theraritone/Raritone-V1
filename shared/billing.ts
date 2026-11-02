@@ -1,4 +1,4 @@
-/** Server-owned commercial plan contract. Prices are in INR paise. */
+/** Server-owned commercial plan contract. Prices are monthly INR amounts. */
 export const SUBSCRIPTION_PLANS = [
   {
     id: "free",
