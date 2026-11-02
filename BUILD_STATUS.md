@@ -19,12 +19,17 @@ Updated: 2026-11-02
 - Added subscription screen with plan comparison and server-verification messaging
 - Added native in-app purchase adapter boundary that refuses fake web purchases
 - Wired Membership entry from Profile to the subscription screen
+- Added billing plan and entitlement read endpoints
+- Added fail-closed receipt submission endpoint
+- Added server-backed Style Streak read endpoint
+- Wired billing routes into the authenticated API application
 
 ## In progress
 
-- Wiring Apple App Store and Google Play Billing adapters in native builds
-- Adding server receipt validation and entitlement persistence
-- Adding authenticated account linking and Style Streak data
+- Implementing Apple App Store and Google Play receipt verification
+- Persisting verified entitlements and renewal dates
+- Adding authenticated account linking
+- Adding Style Streak qualifying-event writes and reward administration
 
 ## Pending integrations
 
@@ -42,6 +47,7 @@ Updated: 2026-11-02
 
 - The current repository is a PWA/Capacitor-oriented TypeScript application, not yet an Expo Router React Native project.
 - Web development builds intentionally cannot start real in-app purchases.
+- Receipt submission currently fails closed until provider-specific verification is implemented and credentials are configured.
 - No AI result or subscription entitlement is fabricated when an external provider is unavailable.
 - Payment, rewards, and entitlement decisions must remain server-verified.
 
@@ -59,7 +65,8 @@ npm run verify
 
 ## Next implementation slice
 
-1. Add native store adapters and receipt submission endpoints.
-2. Add server-backed entitlements and Style Streak.
-3. Add account linking and authentication.
-4. Map exact Figma assets and typography to the navigation shell.
+1. Implement provider-specific Apple and Google receipt verification.
+2. Add entitlement persistence to both local and Supabase repositories.
+3. Add native Capacitor purchase plugins and submit verified receipts.
+4. Add server-verified Style Streak completion events and admin reward controls.
+5. Add account linking and authentication.
