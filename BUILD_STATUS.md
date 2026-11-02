@@ -18,6 +18,7 @@ Updated: 2026-11-02
 - Added server-owned Free, Pro, and VIP plan contract with ₹0/₹299/₹999 pricing
 - Added subscription screen with plan comparison and server-verification messaging
 - Added native in-app purchase adapter boundary that refuses fake web purchases
+- Wired Membership entry from Profile to the subscription screen
 
 ## In progress
 
@@ -58,7 +59,7 @@ npm run verify
 
 ## Next implementation slice
 
-1. Add a Profile membership entry and wire the subscription screen into navigation.
-2. Add native store adapters and receipt submission endpoints.
-3. Add server-backed entitlements and Style Streak.
+1. Add native store adapters and receipt submission endpoints.
+2. Add server-backed entitlements and Style Streak.
+3. Add account linking and authentication.
 4. Map exact Figma assets and typography to the navigation shell.
