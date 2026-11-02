@@ -1,4 +1,5 @@
 import type { PaidSubscriptionPlanId } from "../../shared/billing";
+import { api } from "../state/api";
 
 export type PurchaseAvailability = "native-ready" | "web-unavailable";
 
@@ -9,13 +10,13 @@ export interface PurchaseResult {
   platform: "apple" | "google";
 }
 
-/** Native store boundary. The backend validates receipts before entitlements change. */
 export interface InAppPurchaseAdapter {
   availability: PurchaseAvailability;
   purchase(plan: PaidSubscriptionPlanId): Promise<PurchaseResult>;
   restore(): Promise<PurchaseResult[]>;
 }
 
+/** The native plugin will replace these methods without changing screen code. */
 export function createInAppPurchaseAdapter(): InAppPurchaseAdapter {
   return {
     availability: "web-unavailable",
@@ -26,4 +27,8 @@ export function createInAppPurchaseAdapter(): InAppPurchaseAdapter {
       throw new Error("Restore purchases is available in the mobile store build only.");
     },
   };
+}
+
+export async function submitVerifiedReceipt(input: PurchaseResult & { planId: PaidSubscriptionPlanId }): Promise<void> {
+  await api.post("/billing/receipts", input);
 }
