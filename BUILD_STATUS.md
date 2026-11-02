@@ -15,13 +15,16 @@ Updated: 2026-11-02
 - Preserved the existing camera-first architecture instead of replacing working behavior
 - Documented the Figma-to-code implementation plan
 - Added the initial reusable design-token contract for the Raritone visual system
+- Added a Discover screen with editorial collections, category browsing, and try-on CTA
+- Added a persistent five-destination mobile navigation model: Home, Discover, Try-On, Wardrobe, Profile
+- Kept the existing camera capture, preview, wardrobe, and profile flows intact
 - Recorded current integration and release limitations
 
 ## In progress
 
-- Aligning the existing PWA shell with the Raritone V1 Figma screens
-- Converting the current camera-first surfaces into the final mobile navigation model
+- Aligning visual details and assets with the Raritone V1 Figma screens
 - Adding authenticated user flows while retaining guest-first development behavior
+- Adding server-backed discovery and Style Streak data
 
 ## Pending integrations
 
@@ -43,7 +46,7 @@ Updated: 2026-11-02
 
 ## Verification status
 
-- Existing test and verification commands were not run by the GitHub connector.
+- GitHub connector cannot execute the repository's local npm scripts.
 - Run locally before merging:
 
 ```bash
@@ -55,8 +58,7 @@ npm run verify
 
 ## Next implementation slice
 
-1. Map Figma mobile frames to the current Camera, Preview, Wardrobe, and Profile screens.
-2. Add the mobile bottom navigation and Try-On entry affordance without breaking camera capture.
-3. Add Discover and Style Streak as server-backed surfaces.
-4. Add authenticated account linking and subscription entitlement reads.
-5. Add device builds and native permission validation through Capacitor or migrate deliberately to Expo after characterization tests.
+1. Add authenticated account linking and subscription entitlement reads.
+2. Add server-backed Discover and Style Streak endpoints.
+3. Map exact Figma assets and typography to the new navigation shell.
+4. Add device builds and native permission validation through Capacitor or migrate deliberately to Expo after characterization tests.
