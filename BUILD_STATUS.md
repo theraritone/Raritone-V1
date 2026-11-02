@@ -21,13 +21,16 @@ Updated: 2026-11-02
 - Wired Membership entry from Profile to the subscription screen
 - Added billing plan and entitlement read endpoints
 - Added fail-closed receipt submission endpoint
+- Added durable local entitlement storage
+- Added Supabase entitlement and store transaction migration
 - Added server-backed Style Streak read endpoint
+- Added Style Streak screen and Profile navigation entry
 - Wired billing routes into the authenticated API application
 
 ## In progress
 
 - Implementing Apple App Store and Google Play receipt verification
-- Persisting verified entitlements and renewal dates
+- Adding native Capacitor StoreKit and Play Billing adapters
 - Adding authenticated account linking
 - Adding Style Streak qualifying-event writes and reward administration
 
@@ -35,7 +38,7 @@ Updated: 2026-11-02
 
 - Apple App Store subscription product configuration
 - Google Play Billing subscription product configuration
-- Apple receipt/App Store Server API credentials
+- Apple App Store Server API credentials
 - Google Play service-account credentials for purchase verification
 - Production authentication provider credentials
 - Production private media storage credentials
@@ -66,7 +69,8 @@ npm run verify
 ## Next implementation slice
 
 1. Implement provider-specific Apple and Google receipt verification.
-2. Add entitlement persistence to both local and Supabase repositories.
-3. Add native Capacitor purchase plugins and submit verified receipts.
+2. Connect Supabase entitlement persistence to the repository implementation.
+3. Add native Capacitor StoreKit/Play Billing plugins and receipt submission.
 4. Add server-verified Style Streak completion events and admin reward controls.
 5. Add account linking and authentication.
+6. Add native build configuration and release checks.
